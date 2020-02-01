@@ -15,7 +15,7 @@ VALUES
     ('Jane Doe', 'jane@gmail.com', 'JanePass22!'),
     ('John Doe', 'john@gmail.com', 'JohnPass31!');
 
-INSERT INTO coordinator_templates (user_id, template_name, subject, content)
+INSERT INTO coordinator_templates (user_id, template_name, template_subject, template_content)
 VALUES
     (1, 'Seed Template', 'Seed Subject', 'Hello, this is a seed email. Best, Zoe'),
     (2, 'Second Seed Template', 'Seed 2 Subject', 'Hello, this is another seed email. Best, Zoe'),
