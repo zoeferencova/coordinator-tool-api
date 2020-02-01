@@ -1,0 +1,1 @@
+DROP TABLE IF EXISTS coordinator_list_items;
