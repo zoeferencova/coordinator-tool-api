@@ -8,7 +8,7 @@ const jsonBodyParser = express.json();
 listItemsRouter
     .route('/')
     .get((req, res, next) => {
-        ListItemsService.getAllUsers(req.app.get('db'))
+        ListItemsService.getAllListItems(req.app.get('db'))
         .then(items => {
             res.json(items)
         })

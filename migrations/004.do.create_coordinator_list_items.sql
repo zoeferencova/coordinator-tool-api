@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS coordinator_list_items (
     status status NOT NULL,
     project TEXT NOT NULL,
     advisor TEXT NOT NULL,
-    pm_id INTEGER REFERENCES pms(id),
-    date DATE DEFAULT GETDATE() NOT NULL,
+    pm_id INTEGER REFERENCES coordinator_pms(id),
+    date DATE DEFAULT now() NOT NULL,
     notes TEXT
 );

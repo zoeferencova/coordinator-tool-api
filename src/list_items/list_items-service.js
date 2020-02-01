@@ -1,14 +1,14 @@
 const ListItemsService = {
-    getAllItems(db) {
+    getAllListItems(db) {
         return db
             .from('coordinator_list_items AS item')
             .select(
                 'item.id',
-                'item.userId',
+                'item.user_id',
                 'item.status',
                 'item.project',
                 'item.advisor',
-                'item.pmId',
+                'item.pm_id',
                 'item.date',
                 'item.notes'
             )
