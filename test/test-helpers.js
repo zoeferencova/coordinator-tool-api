@@ -39,7 +39,7 @@ function makeListItemsArray(users, pms) {
         project: 'First test project',
         advisor: 'Test Advisor',
         pm_id: pms[0].id,
-        date: new Date('2029-01-22T16:28:32.615Z'),
+        date: new Date('2019-05-14T11:01:58.135Z'),
         notes: 'Lorem ipsum dolor sit amet',
     },
     {
@@ -49,7 +49,7 @@ function makeListItemsArray(users, pms) {
         project: 'Second test project',
         advisor: 'Test Advisor',
         pm_id: pms[1].id,
-        date: new Date('2029-01-22T16:28:32.615Z'),
+        date: new Date('2019-05-14T11:01:58.135Z'),
         notes: 'Lorem ipsum dolor sit amet',
     },
     {
@@ -59,7 +59,7 @@ function makeListItemsArray(users, pms) {
         project: 'Third test project',
         advisor: 'Test Advisor',
         pm_id: pms[2].id,
-        date: new Date('2029-01-22T16:28:32.615Z'),
+        date: new Date('2019-05-14T11:01:58.135Z'),
         notes: 'Lorem ipsum dolor sit amet',
     },
     {
@@ -69,7 +69,7 @@ function makeListItemsArray(users, pms) {
         project: 'Fourth test project',
         advisor: 'Test Advisor',
         pm_id: pms[3].id,
-        date: new Date('2029-01-22T16:28:32.615Z'),
+        date: new Date('2019-05-14T11:01:58.135Z'),
         notes: 'Lorem ipsum dolor sit amet',
     },
   ]
@@ -150,7 +150,7 @@ function makeExpectedListItem(users, list_item, pms) {
     status: list_item.status,
     project: list_item.project,
     advisor: list_item.advisor,
-    pm: pm.pm_name,
+    pm_id: pm.id,
     date: list_item.date.toISOString(),
     notes: list_item.notes,
   }
@@ -176,7 +176,7 @@ function makeMaliciousListItem(user, pm) {
     status: 'none',
     project: 'Malicious project <script>alert("xss");</script>',
     advisor: 'Bad advisor',
-    pm: pm.name,
+    pm_id: pm.id,
     date: new Date(),
     notes: `Bad image <img src="https://url.to.file.which/does-not.exist" onerror="alert(document.cookie);">.`,
   }
@@ -258,10 +258,17 @@ function seedUsers(db, users) {
     )
 }
 
-function seedTables(db, users, list_items, pms, templates) {
+function seedTables(db, users, pms, list_items, templates) {
   // use a transaction to group the queries and auto rollback on any failure
   return db.transaction(async trx => {
     await seedUsers(trx, users)
+
+    await trx.into('coordinator_pms').insert(pms)
+    await trx.raw(
+        `SELECT setval('coordinator_pms_id_seq', ?)`,
+        [pms[pms.length - 1].id],
+    )
+
     await trx.into('coordinator_list_items').insert(list_items)
     // update the auto sequence to match the forced id values
     await trx.raw(
@@ -269,16 +276,12 @@ function seedTables(db, users, list_items, pms, templates) {
       [list_items[list_items.length - 1].id]
     )
     // only insert comments if there are some, also update the sequence counter
-    await trx.into('coordinator_pms').insert(pms)
-    await trx.raw(
-    `SELECT setval('coordinator_pms_id_seq', ?)`,
-    [pms[pms.length - 1].id],
-    )
+    
 
     await trx.into('coordinator_templates').insert(templates)
     await trx.raw(
-    `SELECT setval('coordinator_templates_id_seq', ?)`,
-    [templates[templates.length - 1].id],
+        `SELECT setval('coordinator_templates_id_seq', ?)`,
+        [templates[templates.length - 1].id],
     )
   })
 }
@@ -314,8 +317,9 @@ module.exports = {
   makeListItemsArray,
   makeTemplatesArray,
   makePmsArray,
-  makeMaliciousArticle,
+  makeMaliciousListItem,
   makeMaliciousTemplate,
+  makeExpectedListItem,
 
   makeFixtures,
   cleanTables,
