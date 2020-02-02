@@ -31,7 +31,7 @@ VALUES
     (3, 'James Peem', 'jamesp@gmail.com'),
     (4, 'Robin Man', 'robinm@gmail.com');
 
-INSERT INTO coordinator_list_items (user_id, status, project, advisor, pm_id, date, notes)
+INSERT INTO coordinator_list_items (user_id, status, project, advisor, pm_id, date_created, notes)
 VALUES
     (1, 'none', 'Sample Project', 'Advisor Name', 1, '2020-01-01', 'Need times for Mon/Tues'),
     (2, 'completed', 'Sample Project 2', 'Advisor Name', 1, '2020-01-01', 'Need times for Weds'),

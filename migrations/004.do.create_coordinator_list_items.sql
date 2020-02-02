@@ -12,6 +12,6 @@ CREATE TABLE IF NOT EXISTS coordinator_list_items (
     project TEXT NOT NULL,
     advisor TEXT NOT NULL,
     pm_id INTEGER REFERENCES coordinator_pms(id),
-    date DATE DEFAULT now() NOT NULL,
+    date_created DATE DEFAULT now() NOT NULL,
     notes TEXT
 );

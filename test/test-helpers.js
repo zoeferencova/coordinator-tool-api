@@ -1,5 +1,5 @@
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
 
 function makeUsersArray() {
   return [
@@ -39,7 +39,7 @@ function makeListItemsArray(users, pms) {
         project: 'First test project',
         advisor: 'Test Advisor',
         pm_id: pms[0].id,
-        date: new Date('2019-05-14T11:01:58.135Z'),
+        date_created: new Date('2029-01-22T16:28:32.615Z'),
         notes: 'Lorem ipsum dolor sit amet',
     },
     {
@@ -49,7 +49,7 @@ function makeListItemsArray(users, pms) {
         project: 'Second test project',
         advisor: 'Test Advisor',
         pm_id: pms[1].id,
-        date: new Date('2019-05-14T11:01:58.135Z'),
+        date_created: new Date('2029-01-22T16:28:32.615Z'),
         notes: 'Lorem ipsum dolor sit amet',
     },
     {
@@ -59,7 +59,7 @@ function makeListItemsArray(users, pms) {
         project: 'Third test project',
         advisor: 'Test Advisor',
         pm_id: pms[2].id,
-        date: new Date('2019-05-14T11:01:58.135Z'),
+        date_created: new Date('2029-01-22T16:28:32.615Z'),
         notes: 'Lorem ipsum dolor sit amet',
     },
     {
@@ -69,7 +69,7 @@ function makeListItemsArray(users, pms) {
         project: 'Fourth test project',
         advisor: 'Test Advisor',
         pm_id: pms[3].id,
-        date: new Date('2019-05-14T11:01:58.135Z'),
+        date_created: new Date('2029-01-22T16:28:32.615Z'),
         notes: 'Lorem ipsum dolor sit amet',
     },
   ]
@@ -151,7 +151,7 @@ function makeExpectedListItem(users, list_item, pms) {
     project: list_item.project,
     advisor: list_item.advisor,
     pm_id: pm.id,
-    date: list_item.date.toISOString(),
+    date_created: list_item.date_created.toISOString(),
     notes: list_item.notes,
   }
 }
@@ -177,7 +177,7 @@ function makeMaliciousListItem(user, pm) {
     project: 'Malicious project <script>alert("xss");</script>',
     advisor: 'Bad advisor',
     pm_id: pm.id,
-    date: new Date(),
+    date_created: new Date(),
     notes: `Bad image <img src="https://url.to.file.which/does-not.exist" onerror="alert(document.cookie);">.`,
   }
   const expectedListItem = {

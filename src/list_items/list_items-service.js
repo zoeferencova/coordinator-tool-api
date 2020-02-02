@@ -9,7 +9,7 @@ const ListItemsService = {
                 'item.project',
                 'item.advisor',
                 'item.pm_id',
-                'item.date',
+                'item.date_created',
                 'item.notes'
             )
     }
