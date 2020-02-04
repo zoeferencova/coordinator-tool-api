@@ -51,9 +51,109 @@ describe('Users Endpoints', function() {
                             error: `Missing '${field}' in request body`,
                         })
                 })
+
+                it(`responds 400 'Password must be longer than 8 characters' when short password`, () => {
+                    const userShortPassword = {
+                        email: 'testemail@gmail.com',
+                        password: '1234567',
+                        full_name: 'test full_name',
+                    }
+
+                    return supertest(app)
+                        .post('/api/users')
+                        .send(userShortPassword)
+                        .expect(400, { error: `Password must be longer than 8 characters` })
+                })
+
+                it(`responds 400 'Password must be less than 72 characters' when long password`, () => {
+                    const userLongPassword = {
+                        email: 'testemail@gmail.com',
+                        password: '*'.repeat(73),
+                        full_name: 'test full_name',
+                    }
+
+                    return supertest(app)
+                        .post('/api/users')
+                        .send(userLongPassword)
+                        .expect(400, { error: `Password must be less than 72 characters` })
+                })
+
+                it(`responds 400 error when password starts with spaces`, () => {
+                    const userPasswordStartsSpaces = {
+                        email: 'testemail@gmail.com',
+                        password: '  1Aa!2Bb@',
+                        full_name: 'test full_name',
+                    }
+
+                    return supertest(app)
+                        .post('/api/users')
+                        .send(userPasswordStartsSpaces)
+                        .expect(400, { error: `Password must not start or end with empty spaces` })
+                })
+
+                it(`responds 400 error when password ends with spaces`, () => {
+                    const userPasswordEndsSpaces = {
+                        email: 'testemail@gmail.com',
+                        password: '1Aa!2Bb@ ',
+                        full_name: 'test full_name',
+                    }
+
+                    return supertest(app)
+                        .post('/api/users')
+                        .send(userPasswordEndsSpaces)
+                        .expect(400, { error: `Password must not start or end with empty spaces` })
+                })
+
+                it(`responds 400 error when password isn't complex enough`, () => {
+                    const userPasswordNotComplex = {
+                        email: 'testemail@gmail.com',
+                        password: '11AAaabb',
+                        full_name: 'test full_name',
+                    }
+
+                    return supertest(app)
+                        .post('/api/users')
+                        .send(userPasswordNotComplex)
+                        .expect(400, { error: `Password must contain 1 upper case, lower case, number and special character` })
+                })
+
+                it(`responds 400 'Email is already taken' when email isn't unique`, () => {
+                    const duplicateUser = {
+                        email: testUser.email,
+                        password: '11AAaa!!',
+                        full_name: 'test full_name'
+                    }
+
+                    return supertest(app)
+                        .post('/api/users')
+                        .send(duplicateUser)
+                        .expect(400, { error: `Email already taken` })
+                })
             })
 
             
+        })
+    })
+
+    context('Happy path', () => {
+        it(`responds 201, serialized user, storing bcrypted password`, () => {
+            const newUser = {
+                email: 'testemail@gmail.com',
+                password: '11AAaa!!',
+                full_name: 'test full_name'
+            }
+
+            return supertest(app)
+                .post('/api/users')
+                .send(newUser)
+                .expect(201)
+                .expect(res => {
+                    expect(res.body).to.have.property('id')
+                    expect(res.body.email).to.eql(newUser.email)
+                    expect(res.body.full_name).to.eql(newUser.full_name)
+                    expect(res.body).to.not.have.property('password')
+                    expect(res.headers.location).to.eql(`/api/users/${res.body.id}`)
+                })
         })
     })
 })

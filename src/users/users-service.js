@@ -1,14 +1,8 @@
+const bcrypt = require('bcryptjs')
+const xss = require('xss')
+const REGEX_UPPER_LOWER_NUMBER_SPECIAL = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&])[\S]+/
+
 const UsersService = {
-    getAllUsers(db) {
-        return db
-            .from('coordinator_users AS users')
-            .select(
-                'users.id',
-                'users.full_name',
-                'users.email',
-                'users.password'
-            )
-    },
     hasUserWithEmail(db, email) {
         return db('coordinator_users')
             .where({ email })
