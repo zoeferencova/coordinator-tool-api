@@ -7,7 +7,8 @@ const { NODE_ENV } = require('./config')
 const usersRouter = require('./users/users-router');
 const listItemsRouter = require('./list_items/list_items-router');
 const pmsRouter = require('./pms/pms-router');
-const templatesRouter = require('./templates/templates-router')
+const templatesRouter = require('./templates/templates-router');
+const authRouter = require('./auth/auth-router');
 
 const app = express();
 
@@ -20,7 +21,8 @@ app.use(cors());
 app.use('/api/users', usersRouter);
 app.use('/api/list', listItemsRouter);
 app.use('/api/pms', pmsRouter);
-app.use('/api/templates', templatesRouter)
+app.use('/api/templates', templatesRouter);
+app.use('/api/auth', authRouter)
 
 app.use(function errorHandler(error, req, res, next) {
     let response;
