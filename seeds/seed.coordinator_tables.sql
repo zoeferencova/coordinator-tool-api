@@ -9,11 +9,11 @@ TRUNCATE
 
 INSERT INTO coordinator_users (full_name, email, password)
 VALUES
-    ('Zoe Ferencova', 'zoeferencova@gmail.com', 'ZoePass33!'),
-    ('Robin Hurst Ferenc', 'robin@gmail.com', 'RobinPass12!'),
-    ('James Park', 'james@gmail.com', 'JamesPass11!'),
-    ('Jane Doe', 'jane@gmail.com', 'JanePass22!'),
-    ('John Doe', 'john@gmail.com', 'JohnPass31!');
+    ('Zoe Ferencova', 'zoeferencova@gmail.com', '$2a$12$ynO.KJK.viPPu7aaVf1wLuQKvFIAEW.HaLF3Ij6fhmtnx9XB2AP3.'),
+    ('Robin Hurst Ferenc', 'robin@gmail.com', '$2a$12$snsp1yDqA1gBkEhRyr1wseHoEDvOrGS/O6DrIdk0dHPlpSA3ijFHS'),
+    ('James Park', 'james@gmail.com', '$2a$12$R0MyKY0l8dninJqTMjk0Ke7jTFAN6VlbLC7YEeCi4b0/.me5/ZML.'),
+    ('Jane Doe', 'jane@gmail.com', '$2a$12$Wtf9GeIj/awVAB8tvAW75OThJPcHoCe3s1aEN559aKYlVRngLaIJy'),
+    ('John Doe', 'john@gmail.com', '$2a$12$TvDry/9aDL8xi4h/kePF9ebFZwcGMqJhtCBrP9b5twe7wr3oAKBga');
 
 INSERT INTO coordinator_templates (user_id, template_name, template_subject, template_content)
 VALUES

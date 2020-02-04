@@ -41,7 +41,7 @@ describe('Users Endpoints', function() {
                     full_name: 'test full_name'
                 }
 
-                it(`responds with 400 required error shen '${field} is missing`, () => {
+                it(`responds with 400 required error when '${field}' is missing`, () => {
                     delete registerAttemptBody[field];
     
                     return supertest(app)
