@@ -1,5 +1,5 @@
 const ListItemsService = {
-    getAllListItems(db) {
+    getAllListItems(db, userId) {
         return db
             .from('coordinator_list_items AS item')
             .select(
@@ -12,6 +12,7 @@ const ListItemsService = {
                 'item.date_created',
                 'item.notes'
             )
+            .where({ user_id: userId })
     }
 }
 

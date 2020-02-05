@@ -34,8 +34,8 @@ VALUES
 INSERT INTO coordinator_list_items (user_id, status, project, advisor, pm_id, notes)
 VALUES
     (1, 'none', 'Sample Project', 'Advisor Name', 1, 'Need times for Mon/Tues'),
-    (2, 'completed', 'Sample Project 2', 'Advisor Name', 1, 'Need times for Weds'),
-    (3, 'reached', 'Sample Project 3', 'Advisor Name', 1, 'Follow up question'),
+    (1, 'completed', 'Sample Project 2', 'Advisor Name', 1, 'Need times for Weds'),
+    (1, 'reached', 'Sample Project 3', 'Advisor Name', 1, 'Follow up question'),
     (3, 'none', 'Sample Project 4', 'Advisor Name', 1, 'Notes'),
     (5, 'reached', 'Sample Project 5', 'Advisor Name', 1, 'Note');
 
