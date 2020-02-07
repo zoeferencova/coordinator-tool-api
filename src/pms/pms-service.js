@@ -1,5 +1,5 @@
 const PmsService = {
-    getAllPms(db) {
+    getAllPms(db, userId) {
         return db
             .from('coordinator_pms AS pm')
             .select(
@@ -8,6 +8,7 @@ const PmsService = {
                 'pm.pm_name',
                 'pm.pm_email'
             )
+            .where({ user_id: userId })
     }
 }
 

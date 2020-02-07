@@ -1,11 +1,22 @@
 const express = require('express');
 const path = require('path');
 const UsersService = require('./users-service')
+const AuthService = require('../auth/auth-service')
 
 const usersRouter = express.Router();
 const jsonBodyParser = express.json();
 
 usersRouter
+    .get('/', (req, res, next) => {
+        const authToken = req.get('Authorization');
+        const bearerToken = authToken.slice(7, authToken.length)
+        const payload = AuthService.verifyJwt(bearerToken);
+        const userId = payload.user_id;
+        UsersService.getUserInfo(req.app.get('db'), userId)
+        .then(user => {
+            return res.json(user)
+        })
+    })
     .post('/', jsonBodyParser, (req, res, next) => {
         const { password, email, full_name } = req.body;
 

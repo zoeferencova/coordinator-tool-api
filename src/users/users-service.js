@@ -3,6 +3,15 @@ const xss = require('xss')
 const REGEX_UPPER_LOWER_NUMBER_SPECIAL = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&])[\S]+/
 
 const UsersService = {
+    getUserInfo(db, userId) {
+        return db
+            .from('coordinator_users AS user')
+            .select(
+                'user.full_name',
+                'user.email'
+            )
+            .where({ id: userId })
+    },
     hasUserWithEmail(db, email) {
         return db('coordinator_users')
             .where({ email })

@@ -1,22 +1,24 @@
 const express = require('express');
 const path = require('path');
-const PmsService = require('./pms-service')
+const CompletedService = require('./completed-service');
 const AuthService = require('../auth/auth-service')
+const { requireAuth } = require('../middleware/jwt-auth')
 
-const pmsRouter = express.Router();
+const completedRouter = express.Router();
 const jsonBodyParser = express.json();
 
-pmsRouter
+completedRouter
     .route('/')
+    .all(requireAuth)
     .get((req, res, next) => {
         const authToken = req.get('Authorization');
         const bearerToken = authToken.slice(7, authToken.length)
         const payload = AuthService.verifyJwt(bearerToken);
         const userId = payload.user_id;
-        PmsService.getAllPms(req.app.get('db'), userId)
-        .then(pms => {
-            return res.json(pms)
+        CompletedService.getCompletedItems(req.app.get('db'), userId)
+        .then(items => {
+            return res.json(items)
         })
     })
 
-module.exports = pmsRouter;
+module.exports = completedRouter;

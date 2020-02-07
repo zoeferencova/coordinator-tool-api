@@ -17,7 +17,7 @@ listItemsRouter
         const userId = payload.user_id;
         ListItemsService.getAllListItems(req.app.get('db'), userId)
         .then(items => {
-            res.json(items)
+            return res.json(items)
         })
     })
 

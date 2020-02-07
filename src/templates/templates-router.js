@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const TemplatesService = require('./templates-service')
+const AuthService = require('../auth/auth-service')
 
 const templatesRouter = express.Router();
 const jsonBodyParser = express.json();
@@ -8,9 +9,13 @@ const jsonBodyParser = express.json();
 templatesRouter
     .route('/')
     .get((req, res, next) => {
-        TemplatesService.getAllTemplates(req.app.get('db'))
+        const authToken = req.get('Authorization');
+        const bearerToken = authToken.slice(7, authToken.length)
+        const payload = AuthService.verifyJwt(bearerToken);
+        const userId = payload.user_id;
+        TemplatesService.getAllTemplates(req.app.get('db'), userId)
         .then(templates => {
-            res.json(templates)
+            return res.json(templates)
         })
     })
 

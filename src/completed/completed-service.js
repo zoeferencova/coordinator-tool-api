@@ -1,5 +1,5 @@
-const ListItemsService = {
-    getAllListItems(db, userId) {
+const CompletedService = {
+    getCompletedItems(db, userId) {
         return db
             .from('coordinator_list_items')
             .select(
@@ -11,7 +11,7 @@ const ListItemsService = {
                 'coordinator_list_items.notes'
             )
             .where('coordinator_list_items.user_id', '=', userId)
-            .whereNot('coordinator_list_items.status', '=', 'completed')
+            .where('coordinator_list_items.status', '=', 'completed')
             .select(
                 'coordinator_pms.pm_name',
                 'coordinator_pms.pm_email'
@@ -23,4 +23,4 @@ const ListItemsService = {
     
 }
 
-module.exports = ListItemsService;
+module.exports = CompletedService;
