@@ -72,6 +72,26 @@ function makeListItemsArray(users, pms) {
         date_created: new Date('2029-01-22T16:28:32.615Z'),
         notes: 'Lorem ipsum dolor sit amet',
     },
+    {
+      id: 5,
+      user_id: users[0].id,
+      status: 'none',
+      project: 'Fourth test project',
+      advisor: 'Test Advisor',
+      pm_id: pms[3].id,
+      date_created: new Date('2029-01-22T16:28:32.615Z'),
+      notes: 'Lorem ipsum dolor sit amet',
+  },
+  {
+    id: 6,
+    user_id: users[0].id,
+    status: 'reached',
+    project: 'Fourth test project',
+    advisor: 'Test Advisor',
+    pm_id: pms[2].id,
+    date_created: new Date('2029-01-22T16:28:32.615Z'),
+    notes: 'Lorem ipsum dolor sit amet',
+},
   ]
 }
 
@@ -137,23 +157,23 @@ function makePmsArray(users) {
     ];
   }
 
-function makeExpectedListItem(users, list_item, pms) {
-  const user = users
-    .find(user => user.id === list_item.user_id)
+function makeExpectedListItems(list, user, pms) {
+    const filteredList = list.filter(item => 
+      item.user_id === user.id && item.status !== 'completed'
+    ) 
+    
+    const expectedList = filteredList.map(item => { 
+      const pm = pms.find(pm => pm.id === item.pm_id)
+      item.pm_name = pm.pm_name;
+      item.pm_email = pm.pm_email;
+      delete item['pm_id'];
+      delete item['user_id'];
+      item.date_created = item.date_created.toISOString();
+      return item;
+    }) 
+    
+    return expectedList;
 
-  const pm = pms
-    .find(pm => pm.id === list_item.pm_id)
-
-  return {
-    id: list_item.id,
-    user_id: user.id,
-    status: list_item.status,
-    project: list_item.project,
-    advisor: list_item.advisor,
-    pm_id: pm.id,
-    date_created: list_item.date_created.toISOString(),
-    notes: list_item.notes,
-  }
 }
 
 function makeExpectedTemplate(users, template) {
@@ -167,6 +187,13 @@ function makeExpectedTemplate(users, template) {
         template_subject: template.template_subject,
         template_content: template.template_content,
     }
+}
+
+function makeExpectedUserInformation(user) {
+  return {
+    full_name: user.full_name,
+    email: user.email
+  }
 }
 
 function makeMaliciousListItem(user, pm) {
@@ -319,7 +346,8 @@ module.exports = {
   makePmsArray,
   makeMaliciousListItem,
   makeMaliciousTemplate,
-  makeExpectedListItem,
+  makeExpectedListItems,
+  makeExpectedUserInformation,
 
   makeFixtures,
   cleanTables,

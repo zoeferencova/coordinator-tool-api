@@ -28,9 +28,14 @@ describe('List Items Endpoints', function() {
 
     describe(`GET /api/list`, () => {
         context(`Given no list items`, () => {
+            beforeEach(() =>
+                helpers.seedUsers(db, testUsers)
+            )
+
             it(`responds with 200 and an empty list`, () => {
                 return supertest(app)
                     .get('/api/list')
+                    .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
                     .expect(200, [])
             })
         })
@@ -46,16 +51,11 @@ describe('List Items Endpoints', function() {
                 )
             )
 
-            it('responds with 200 and all of the list items', () => {
-                const expectedListItems = testListItems.map(item =>
-                    helpers.makeExpectedListItem(
-                        testUsers,
-                        item,
-                        testPms
-                    )
-                )
+            it('responds with 200 and all of the list items for the user that do not have the status completed', () => {
+                const expectedListItems = helpers.makeExpectedListItems(testListItems, testUsers[1], testPms)
                 return supertest(app)
                     .get('/api/list')
+                    .set('Authorization', helpers.makeAuthHeader(testUsers[1]))
                     .expect(200, expectedListItems)
             })
         })

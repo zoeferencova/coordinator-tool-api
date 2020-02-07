@@ -135,6 +135,22 @@ describe('Users Endpoints', function() {
         })
     })
 
+    describe('GET /api/users', () => {
+        beforeEach('insert users', () =>
+                helpers.seedUsers(
+                    db,
+                    testUsers,
+                )
+            )
+        it(`responds with information for the current user`, () => {
+            const expectedUserInformation = [helpers.makeExpectedUserInformation(testUsers[3])]
+            return supertest(app)
+                .get('/api/users')
+                .set('Authorization', helpers.makeAuthHeader(testUsers[3]))
+                .expect(200, expectedUserInformation)
+        })
+    })
+
     context('Happy path', () => {
         it(`responds 201, serialized user, storing bcrypted password`, () => {
             const newUser = {
