@@ -10,7 +10,8 @@ const UsersService = {
                 'user.full_name',
                 'user.email'
             )
-            .where({ id: userId })
+            .where('user.id', '=', userId)
+            
     },
     hasUserWithEmail(db, email) {
         return db('coordinator_users')
