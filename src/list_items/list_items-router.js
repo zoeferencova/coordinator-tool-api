@@ -20,5 +20,31 @@ listItemsRouter
             return res.json(items)
         })
     })
+    .post(requireAuth, jsonBodyParser, (req, res, next) => {
+        const { project, advisor, pm_id } = req.body;
+        const newItem = { project, advisor, pm_id, status: 'none' }
+
+        for (const [key, value] of Object.entries(newItem)) {
+            if (value === null) {
+                return res.status(400).json({
+                    error: `Missing '${key}' in request body`
+                })
+            }
+        }
+
+        newItem.notes = req.body.notes;
+        newItem.user_id = req.user.id;
+        ListItemsService.insertItem(
+            req.app.get('db'),
+            newItem
+        )
+            .then(item => {
+                res
+                    .status(201)
+
+                    .json(ListItemsService.serializeItem(item))
+            })
+            .catch(next)
+    })
 
 module.exports = listItemsRouter;
