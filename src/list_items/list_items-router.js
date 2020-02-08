@@ -22,18 +22,21 @@ listItemsRouter
     })
     .post(requireAuth, jsonBodyParser, (req, res, next) => {
         const { project, advisor, pm_id } = req.body;
-        const newItem = { project, advisor, pm_id, status: 'none' }
+        const newItem = { project, advisor, pm_id }
+        newItem.user_id = req.user.id;
+        newItem.status = 'none';
 
         for (const [key, value] of Object.entries(newItem)) {
-            if (value === null) {
+            if (value === null || value === undefined) {
                 return res.status(400).json({
-                    error: `Missing '${key}' in request body`
+                    error: {
+                        message: `Missing '${key}' in request body`
+                    }
                 })
             }
         }
-
         newItem.notes = req.body.notes;
-        newItem.user_id = req.user.id;
+        
         ListItemsService.insertItem(
             req.app.get('db'),
             newItem
@@ -41,7 +44,7 @@ listItemsRouter
             .then(item => {
                 res
                     .status(201)
-                    .json(ListItemsService.serializeItem(item))
+                    .json(item)
             })
             .catch(next)
     })
@@ -54,6 +57,9 @@ listItemsRouter
            .then(id => {
                res.status(204)
            })
+
+    })
+    .patch((req, res) => {
 
     })
 

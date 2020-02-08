@@ -60,4 +60,62 @@ describe('List Items Endpoints', function() {
             })
         })
     })
+    describe.only(`POST /list`, () => {
+        beforeEach('insert list items', () =>
+                helpers.seedTables(
+                    db,
+                    testUsers,
+                    testPms,
+                    testListItems,
+                    testTemplates
+                )
+            )
+        it(`creates a list item, responding with 201 and the new item`, function() {
+            const newItem = {
+                project: 'New Project',
+                advisor: 'New Advisor',
+                pm_id: 1,
+                notes: 'Notes'
+            }
+
+            const foundPm = testPms.find(pm => pm.id === newItem.pm_id)
+            
+            return supertest(app)
+                .post('/api/list')
+                .set('Authorization', helpers.makeAuthHeader(testUsers[1]))
+                .send(newItem)
+                .expect(201)
+                .expect(res => {
+                    expect(res.body.project).to.eql(newItem.project)
+                    expect(res.body.advisor).to.eql(newItem.advisor)
+                    expect(res.body.pm_name).to.eql(foundPm.pm_name)
+                    expect(res.body.pm_email).to.eql(foundPm.pm_email)
+                    expect(res.body.notes).to.eql(newItem.notes)
+                    expect(res.body).to.have.property('id')
+                    expect(res.body).to.have.property('date_created')
+                })
+                
+        })
+        const requiredFields = ['project', 'advisor', 'pm_id']
+
+        requiredFields.forEach(field => {
+            const newItem = {
+                project: 'New Project',
+                advisor: 'New Advisor',
+                pm_id: 1,
+            }
+
+            it(`responds with 400 and an error message when the '${field}' is missing`, () => {
+                delete newItem[field]
+
+                return supertest(app)
+                    .post('/api/list')
+                    .set('Authorization', helpers.makeAuthHeader(testUsers[1]))
+                    .send(newItem)
+                    .expect(400, {
+                        error: { message: `Missing '${field}' in request body` }
+                    })
+            })
+        })
+    })
 })

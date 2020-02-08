@@ -68,6 +68,12 @@ const ListItemsService = {
             .from('coordinator_list_items')
             .where({ id: Number(itemId) })
             .del()
+    },
+    updateItem(db, itemId) {
+        return db
+            .from('coordinator_list_items')
+            .where({ id: Number(itemId) })
+            
     }
 }
 

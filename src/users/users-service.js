@@ -11,6 +11,7 @@ const UsersService = {
                 'user.email'
             )
             .where('user.id', '=', userId)
+            .first()
             
     },
     hasUserWithEmail(db, email) {
