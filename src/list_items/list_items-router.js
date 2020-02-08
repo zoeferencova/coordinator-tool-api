@@ -41,10 +41,20 @@ listItemsRouter
             .then(item => {
                 res
                     .status(201)
-
                     .json(ListItemsService.serializeItem(item))
             })
             .catch(next)
+    })
+
+listItemsRouter
+    .route('/:id')
+    .delete((req, res, next) => {
+        const id = req.params.id;
+        ListItemsService.deleteItem(req.app.get('db'), id)
+           .then(id => {
+               res.status(204)
+           })
+
     })
 
 module.exports = listItemsRouter;

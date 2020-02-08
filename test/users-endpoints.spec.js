@@ -143,7 +143,7 @@ describe('Users Endpoints', function() {
                 )
             )
         it(`responds with information for the current user`, () => {
-            const expectedUserInformation = [helpers.makeExpectedUserInformation(testUsers[3])]
+            const expectedUserInformation = helpers.makeExpectedUserInformation(testUsers[3])
             return supertest(app)
                 .get('/api/users')
                 .set('Authorization', helpers.makeAuthHeader(testUsers[3]))
