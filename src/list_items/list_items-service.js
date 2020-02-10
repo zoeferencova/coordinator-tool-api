@@ -1,7 +1,7 @@
 const xss = require('xss')
 
 const ListItemsService = {
-    getById(db, itemId, pmId) {
+    getById(db, itemId) {
         return db 
         .from('coordinator_list_items')
         .select(
@@ -19,7 +19,6 @@ const ListItemsService = {
             'coordinator_pms.pm_name',
             'coordinator_pms.pm_email'
         )
-        .where('coordinator_pms.id', '=', pmId)
         .join('coordinator_pms', {'coordinator_list_items.pm_id': 'coordinator_pms.id'})
     },
     getAllListItems(db, userId) {
@@ -66,14 +65,15 @@ const ListItemsService = {
     deleteItem(db, itemId) {
         return db
             .from('coordinator_list_items')
-            .where({ id: Number(itemId) })
+            .where({ id: Number(itemId)})
             .del()
     },
-    updateItem(db, itemId) {
+    updateItem(db, itemId, newItemFields) {
         return db
             .from('coordinator_list_items')
             .where({ id: Number(itemId) })
-            
+            .update(newItemFields)
+
     }
 }
 

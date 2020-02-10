@@ -3,9 +3,21 @@ const path = require('path');
 const ListItemsService = require('./list_items-service');
 const AuthService = require('../auth/auth-service')
 const { requireAuth } = require('../middleware/jwt-auth')
+const xss = require('xss')
 
 const listItemsRouter = express.Router();
 const jsonBodyParser = express.json();
+
+const serializeItem = item => ({
+    id: item.id,
+    status: item.status,
+    project: xss(item.project),
+    advisor: xss(item.advisor),
+    date_created: new Date(item.date_created),
+    notes: xss(item.notes),
+    pm_name: item.pm_name,
+    pm_email: item.pm_email
+})
 
 listItemsRouter
     .route('/')
@@ -17,7 +29,7 @@ listItemsRouter
         const userId = payload.user_id;
         ListItemsService.getAllListItems(req.app.get('db'), userId)
         .then(items => {
-            return res.json(items)
+            return res.json(items.map(serializeItem))
         })
     })
     .post(requireAuth, jsonBodyParser, (req, res, next) => {
@@ -44,23 +56,69 @@ listItemsRouter
             .then(item => {
                 res
                     .status(201)
-                    .json(item)
+                    .json(serializeItem(item))
             })
             .catch(next)
     })
 
 listItemsRouter
     .route('/:id')
+    .all((req, res, next) => {
+        ListItemsService.getById(
+            req.app.get('db'),
+            req.params.id,
+            
+        )
+            .then(item => {
+                if (!item) {
+                    return res.status(404).json({
+                        error: { message: `Item doesn't exist` }
+                    })
+                }
+                res.item = item
+                next()
+            })
+            .catch(next)
+    })
+    .get((req, res, next) => {
+        const id = req.params.id;
+        ListItemsService.getById(req.app.get('db'), id)
+            .then(item => {
+                return res.json(serializeItem(item))
+            })
+    })
     .delete((req, res, next) => {
         const id = req.params.id;
         ListItemsService.deleteItem(req.app.get('db'), id)
            .then(id => {
-               res.status(204)
+               res.status(204).end()
            })
-
+           .catch(next)
     })
-    .patch((req, res) => {
+    .patch(jsonBodyParser, (req, res, next) => {
+        console.log(req.body);
+        const { project, advisor, status, pm_id, notes } = req.body;
+        const itemToUpdate = { project, advisor, status, pm_id, notes }
+        
+        const numberOfValues = Object.values(itemToUpdate).filter(Boolean).length;
 
+        if (numberOfValues === 0) {
+            return res.status(400).json({
+                error: {
+                    message: `Request body must contain either 'project', 'advisor', 'pm_id', 'notes' or 'status'`
+                }
+            })
+        }
+
+        ListItemsService.updateItem(
+            req.app.get('db'),
+            req.params.id,
+            itemToUpdate
+        )
+            .then(numRowsAffected => {
+                res.status(204).end()
+            })
+            .catch(next)
     })
 
 module.exports = listItemsRouter;

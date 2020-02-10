@@ -38,17 +38,17 @@ function makeListItemsArray(users, pms) {
         status: 'completed',
         project: 'First test project',
         advisor: 'Test Advisor',
-        pm_id: pms[0].id,
+        pm_id: 1,
         date_created: new Date('2029-01-22T16:28:32.615Z'),
         notes: 'Lorem ipsum dolor sit amet',
     },
     {
         id: 2,
-        user_id: users[1].id,
+        user_id: users[0].id,
         status: 'none',
         project: 'Second test project',
         advisor: 'Test Advisor',
-        pm_id: pms[1].id,
+        pm_id: 2,
         date_created: new Date('2029-01-22T16:28:32.615Z'),
         notes: 'Lorem ipsum dolor sit amet',
     },
@@ -58,7 +58,7 @@ function makeListItemsArray(users, pms) {
         status: 'reached',
         project: 'Third test project',
         advisor: 'Test Advisor',
-        pm_id: pms[2].id,
+        pm_id: 3,
         date_created: new Date('2029-01-22T16:28:32.615Z'),
         notes: 'Lorem ipsum dolor sit amet',
     },
@@ -68,17 +68,17 @@ function makeListItemsArray(users, pms) {
         status: 'completed',
         project: 'Fourth test project',
         advisor: 'Test Advisor',
-        pm_id: pms[3].id,
+        pm_id: 4,
         date_created: new Date('2029-01-22T16:28:32.615Z'),
         notes: 'Lorem ipsum dolor sit amet',
     },
     {
       id: 5,
-      user_id: users[0].id,
+      user_id: users[2].id,
       status: 'none',
       project: 'Fourth test project',
       advisor: 'Test Advisor',
-      pm_id: pms[3].id,
+      pm_id: 3,
       date_created: new Date('2029-01-22T16:28:32.615Z'),
       notes: 'Lorem ipsum dolor sit amet',
   },
@@ -88,7 +88,7 @@ function makeListItemsArray(users, pms) {
     status: 'reached',
     project: 'Fourth test project',
     advisor: 'Test Advisor',
-    pm_id: pms[2].id,
+    pm_id: 2,
     date_created: new Date('2029-01-22T16:28:32.615Z'),
     notes: 'Lorem ipsum dolor sit amet',
 },
@@ -171,9 +171,19 @@ function makeExpectedListItems(list, user, pms) {
       item.date_created = item.date_created.toISOString();
       return item;
     }) 
+
+    console.log(expectedList)
     
     return expectedList;
+}
 
+function makeExpectedListItem(item, pms) {
+  const pm = pms.find(pm => pm.id === item.pm_id)
+  item.pm_name = pm.pm_name;
+  item.pm_email = pm.pm_email;
+  delete item['pm_id'];
+  item.date_created = item.date_created.toISOString();
+  return item;
 }
 
 function makeExpectedTemplate(users, template) {
@@ -208,14 +218,13 @@ function makeMaliciousListItem(user, pm) {
     notes: `Bad image <img src="https://url.to.file.which/does-not.exist" onerror="alert(document.cookie);">.`,
   }
   const expectedListItem = {
-    ...makeExpectedListItem([user], [pm], maliciousListItem),
+    ...makeExpectedListItem(maliciousListItem, [pm]),
     title: 'Malicious project &lt;script&gt;alert(\"xss\");&lt;/script&gt;',
     content: `Bad image <img src="https://url.to.file.which/does-not.exist">.`,
   }
-  return {
-    maliciousListItem,
-    expectedListItem,
-  }
+
+  console.log(expectedListItem)
+  return expectedListItem
 }
 
 function makeMaliciousTemplate(user) {
@@ -288,6 +297,7 @@ function seedUsers(db, users) {
 function seedTables(db, users, pms, list_items, templates) {
   // use a transaction to group the queries and auto rollback on any failure
   return db.transaction(async trx => {
+    
     await seedUsers(trx, users)
 
     await trx.into('coordinator_pms').insert(pms)
@@ -295,21 +305,24 @@ function seedTables(db, users, pms, list_items, templates) {
         `SELECT setval('coordinator_pms_id_seq', ?)`,
         [pms[pms.length - 1].id],
     )
-
-    await trx.into('coordinator_list_items').insert(list_items)
-    // update the auto sequence to match the forced id values
-    await trx.raw(
-      `SELECT setval('coordinator_list_items_id_seq', ?)`,
-      [list_items[list_items.length - 1].id]
-    )
-    // only insert comments if there are some, also update the sequence counter
+    if (list_items) {
+      await trx.into('coordinator_list_items').insert(list_items)
+      // update the auto sequence to match the forced id values
+      await trx.raw(
+        `SELECT setval('coordinator_list_items_id_seq', ?)`,
+        [list_items[list_items.length - 1].id]
+      )
+    }
     
+    if (templates) {
+      await trx.into('coordinator_templates').insert(templates)
+      await trx.raw(
+          `SELECT setval('coordinator_templates_id_seq', ?)`,
+          [templates[templates.length - 1].id],
+      )
+    }
 
-    await trx.into('coordinator_templates').insert(templates)
-    await trx.raw(
-        `SELECT setval('coordinator_templates_id_seq', ?)`,
-        [templates[templates.length - 1].id],
-    )
+    
   })
 }
 
@@ -347,6 +360,7 @@ module.exports = {
   makeMaliciousListItem,
   makeMaliciousTemplate,
   makeExpectedListItems,
+  makeExpectedListItem,
   makeExpectedUserInformation,
 
   makeFixtures,

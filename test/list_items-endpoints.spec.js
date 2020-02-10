@@ -59,15 +59,52 @@ describe('List Items Endpoints', function() {
                     .expect(200, expectedListItems)
             })
         })
+
+        context.skip(`Given an XSS attack article`, () => {
+            beforeEach('insert list items', () =>
+                helpers.seedTables(
+                    db,
+                    testUsers,
+                    testPms,
+                )
+            )
+            const maliciousListItem = {
+                id: 911,
+                user_id: testUsers[0].id,
+                status: 'none',
+                project: 'Malicious project <script>alert("xss");</script>',
+                advisor: 'Bad advisor',
+                pm_id: testPms[0].id,
+                date_created: new Date(),
+                notes: `Bad image <img src="https://url.to.file.which/does-not.exist" onerror="alert(document.cookie);">.`,
+            }
+
+            beforeEach('insert malicious item', () => {
+                return db
+                    .into('coordinator_list_items')
+                    .insert(maliciousListItem)
+            })
+
+            const expectedListItem = helpers.makeExpectedListItem(maliciousListItem, testPms)
+            expectedListItem.title = 'Malicious project &lt;script&gt;alert(\"xss\");&lt;/script&gt;';
+            expectedListItem.notes = `Bad image <img src="https://url.to.file.which/does-not.exist">.`;
+            
+            console.log(maliciousListItem)
+            it('removes XSS attack content', () => {
+                return supertest(app)
+                    .get(`/api/list`)
+                    .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+                    .expect(200)
+                    .expect(res => res.body).to.eql(expectedListItem)
+            })
+        })
     })
-    describe.only(`POST /list`, () => {
+    describe(`POST /list`, () => {
         beforeEach('insert list items', () =>
                 helpers.seedTables(
                     db,
                     testUsers,
                     testPms,
-                    testListItems,
-                    testTemplates
                 )
             )
         it(`creates a list item, responding with 201 and the new item`, function() {
@@ -92,7 +129,9 @@ describe('List Items Endpoints', function() {
                     expect(res.body.pm_email).to.eql(foundPm.pm_email)
                     expect(res.body.notes).to.eql(newItem.notes)
                     expect(res.body).to.have.property('id')
-                    expect(res.body).to.have.property('date_created')
+                    const expected = new Date(res.body.date_published)
+                    const actual = new Date(res.body.date_published)
+                    expect(expected).to.eql(actual)
                 })
                 
         })
@@ -115,6 +154,140 @@ describe('List Items Endpoints', function() {
                     .expect(400, {
                         error: { message: `Missing '${field}' in request body` }
                     })
+            })
+        })
+    })
+
+    describe(`DELETE /list/:id`, () => {
+        context('Given no list items', () => {
+            it('responds with 404', () => {
+                const itemId = 12345;
+                return supertest(app)
+                    .delete(`/api/list/${itemId}`)
+                    .expect(404, { error: { message: `Item doesn't exist` } })
+            })
+        })
+        context(`Given there are list items in the database`, () => {
+            beforeEach('insert list items', () =>
+                helpers.seedTables(
+                    db,
+                    testUsers,
+                    testPms,
+                    testListItems,
+                    testTemplates
+                )
+            )
+
+            it(`responds with 204 and removes the list item`, () => {
+                const idToRemove = 3;
+                const filteredItems = testListItems.filter(item => item.id !== idToRemove)
+                const expectedListItems = helpers.makeExpectedListItems(filteredItems, testUsers[2], testPms)
+                return supertest(app)
+                    .delete(`/api/list/${idToRemove}`)
+                    .set('Authorization', helpers.makeAuthHeader(testUsers[2]))
+                    .expect(204)
+                    .then(res => {
+                        return supertest(app)
+                            .get('/api/list')
+                            .set('Authorization', helpers.makeAuthHeader(testUsers[2]))
+                            .expect(200, expectedListItems)
+                    })
+            })
+        })
+
+        
+    })
+
+    describe(`PATCH /api/list/:id`, () => {
+        context(`Given no articles`, () => {
+            it(`responds with 404`, () => {
+                const itemId = 123456;
+                return supertest(app)
+                    .patch(`/api/list/${itemId}`)
+                    .expect(404, { error: { message: `Item doesn't exist` } })
+            })
+        })
+
+        context('Given there are list items in the database', () => {
+            beforeEach('insert list items', () =>
+                helpers.seedTables(
+                    db,
+                    testUsers,
+                    testPms,
+                    testListItems,
+                    testTemplates
+                )
+            )
+
+            it(`responds with 204 and updates the item`, () => {
+                const idToUpdate = 3;
+                const updateItem = {
+                    project: 'Updated Project',
+                    advisor: 'Updated Advisor',
+                    pm_id: 2,
+                    status: 'none'
+                }
+
+                const formattedItem = helpers.makeExpectedListItem(testListItems[idToUpdate - 1], testPms)
+
+                const expectedItem = {
+                    ...formattedItem,
+                    ...updateItem
+                }
+
+                delete expectedItem.pm_id;
+                delete expectedItem.user_id;
+
+                return supertest(app)
+                    .patch(`/api/list/${idToUpdate}`)
+                    .send(updateItem)
+                    .expect(204)
+                    .then(res => 
+                        supertest(app)
+                            .get(`/api/list/${idToUpdate}`)
+                            .expect(expectedItem)    
+                    )
+            })
+
+            it.skip(`responds with 400 when no required fields supplied`, () => {
+                const idToUpdate = 3;
+                return supertest(app)
+                    .patch(`/api/list/${idToUpdate}`)
+                    .send({ irrelevantField: 'foo' })
+                    .expect(400, {
+                        error: {
+                            message: `Request body must contain either 'project', 'advisor', 'pm_id', 'notes' or 'status'`
+                        }
+                    })
+            })
+
+            it.skip(`responds with 204 when updating only a subset of fields`, () => {
+                const idToUpdate = 3;
+                const updateItem = {
+                    project: 'Updated Project Name'
+                }
+                const formattedItem = helpers.makeExpectedListItem(testListItems[idToUpdate - 1], testPms)
+
+                const expectedItem = {
+                    ...formattedItem,
+                    ...updateItem
+                }
+
+                delete expectedItem.pm_id;
+                delete expectedItem.user_id;
+
+                return supertest(app)
+                    .patch(`/api/list/${idToUpdate}`)
+                    .send({
+                        ...updateItem,
+                        fieldToIgnore: 'should not be in GET response'
+                    })
+                    .expect(204)
+                    .then(res => 
+                        supertest(app)
+                            .get(`/api/list/${idToUpdate}`)
+                            .expect(expectedItem)    
+                    )
             })
         })
     })
