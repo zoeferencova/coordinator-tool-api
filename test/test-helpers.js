@@ -34,20 +34,25 @@ function makeListItemsArray(users, pms) {
   return [
     {
         id: 1,
-        user_id: users[0].id,
+        user_id: users[1].id,
         status: 'completed',
         project: 'First test project',
+        project_url: 'http://www.fakeproject.com',
         advisor: 'Test Advisor',
+        advisor_url: 'http://www.fakeadv.com',
         pm_id: 1,
         date_created: new Date('2029-01-22T16:28:32.615Z'),
+        date_completed: new Date('2029-01-26T16:28:32.615Z'),
         notes: 'Lorem ipsum dolor sit amet',
     },
     {
         id: 2,
-        user_id: users[0].id,
+        user_id: users[1].id,
         status: 'none',
         project: 'Second test project',
+        project_url: 'http://www.fakeproject.com',
         advisor: 'Test Advisor',
+        advisor_url: '',
         pm_id: 2,
         date_created: new Date('2029-01-22T16:28:32.615Z'),
         notes: 'Lorem ipsum dolor sit amet',
@@ -57,7 +62,9 @@ function makeListItemsArray(users, pms) {
         user_id: users[2].id,
         status: 'reached',
         project: 'Third test project',
+        project_url: 'http://www.fakeproject.com',
         advisor: 'Test Advisor',
+        advisor_url: '',
         pm_id: 3,
         date_created: new Date('2029-01-22T16:28:32.615Z'),
         notes: 'Lorem ipsum dolor sit amet',
@@ -67,9 +74,12 @@ function makeListItemsArray(users, pms) {
         user_id: users[3].id,
         status: 'completed',
         project: 'Fourth test project',
+        project_url: 'http://www.fakeproject.com',
         advisor: 'Test Advisor',
+        advisor_url: 'http://www.fakeadv.com',
         pm_id: 4,
         date_created: new Date('2029-01-22T16:28:32.615Z'),
+        date_completed: new Date('2029-01-24T16:28:32.615Z'),
         notes: 'Lorem ipsum dolor sit amet',
     },
     {
@@ -77,17 +87,21 @@ function makeListItemsArray(users, pms) {
       user_id: users[2].id,
       status: 'none',
       project: 'Fourth test project',
+      project_url: '',
       advisor: 'Test Advisor',
+      advisor_url: 'http://www.fakeadv.com',
       pm_id: 3,
       date_created: new Date('2029-01-22T16:28:32.615Z'),
       notes: 'Lorem ipsum dolor sit amet',
   },
   {
     id: 6,
-    user_id: users[0].id,
+    user_id: users[1].id,
     status: 'reached',
     project: 'Fourth test project',
+    project_url: '',
     advisor: 'Test Advisor',
+    advisor_url: '',
     pm_id: 2,
     date_created: new Date('2029-01-22T16:28:32.615Z'),
     notes: 'Lorem ipsum dolor sit amet',
@@ -144,7 +158,7 @@ function makePmsArray(users) {
       },
       {
         id: 3,
-        user_id: users[2].id,
+        user_id: users[1].id,
         pm_name: 'Test PM',
         pm_email: 'test@gmail.com',
       },
@@ -171,8 +185,6 @@ function makeExpectedListItems(list, user, pms) {
       item.date_created = item.date_created.toISOString();
       return item;
     }) 
-
-    console.log(expectedList)
     
     return expectedList;
 }
@@ -203,6 +215,15 @@ function makeExpectedTemplates(userId, templates) {
   })
   
   return expectedTemplates;
+}
+
+function makeExpectedPms(userId, pms) {
+  const usersPms = pms.filter(pm => pm.user_id === userId)
+  const expectedPms = usersPms.map(pm => {
+    return {...pm, user_id: userId}
+  })
+  
+  return expectedPms;
 }
 
 function makeExpectedUserInformation(user) {
@@ -373,6 +394,7 @@ module.exports = {
   makeExpectedListItems,
   makeExpectedListItem,
   makeExpectedUserInformation,
+  makeExpectedPms,
 
   makeFixtures,
   cleanTables,

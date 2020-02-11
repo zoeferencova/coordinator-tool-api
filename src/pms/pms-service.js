@@ -30,6 +30,12 @@ const PmsService = {
             .then(([pm]) => pm)
             .then(pm => PmsService.getById(db, pm.id))
     },
+    deletePm(db, pmId) {
+        return db
+            .from('coordinator_pms')
+            .where({ id: Number(pmId)})
+            .del()
+    },
 }
 
 module.exports = PmsService;

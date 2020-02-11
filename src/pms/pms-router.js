@@ -54,4 +54,39 @@ pmsRouter
             .catch(next)
     })
 
+pmsRouter
+    .route('/:id')
+    .all((req, res, next) => {
+        PmsService.getById(
+            req.app.get('db'),
+            req.params.id,
+            
+        )
+            .then(pm => {
+                if (!pm) {
+                    return res.status(404).json({
+                        error: { message: `PM doesn't exist` }
+                    })
+                }
+                res.pm = pm
+                next()
+            })
+            .catch(next)
+    })
+    .get((req, res, next) => {
+        const id = req.params.id;
+        PmsService.getById(req.app.get('db'), id)
+            .then(pm => {
+                return res.json(serializePm(pm))
+            })
+    })
+    .delete((req, res, next) => {
+        const id = req.params.id;
+        PmsService.deletePm(req.app.get('db'), id)
+           .then(id => {
+               res.status(204).end()
+           })
+           .catch(next)
+    })
+
 module.exports = pmsRouter;

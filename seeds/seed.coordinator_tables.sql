@@ -31,12 +31,12 @@ VALUES
     (3, 'James Peem', 'jamesp@gmail.com'),
     (4, 'Robin Man', 'robinm@gmail.com');
 
-INSERT INTO coordinator_list_items (user_id, status, project, advisor, pm_id, notes)
+INSERT INTO coordinator_list_items (user_id, status, project, project_url, advisor, advisor_url, pm_id, notes)
 VALUES
-    (1, 'none', 'Sample Project', 'Advisor Name', 1, 'Need times for Mon/Tues'),
-    (1, 'completed', 'Sample Project 2', 'Advisor Name', 1, 'Need times for Weds'),
-    (1, 'reached', 'Sample Project 3', 'Advisor Name', 1, 'Follow up question'),
-    (3, 'none', 'Sample Project 4', 'Advisor Name', 1, 'Notes'),
-    (5, 'reached', 'Sample Project 5', 'Advisor Name', 1, 'Note');
+    (1, 'none', 'Sample Project', 'http://www.sampleurl.com','Advisor Name', 'http://www.sampleadvisor.com', 1, 'Need times for Mon/Tues'),
+    (1, 'completed', 'Sample Project 2', 'http://www.sampleurl.com','Advisor Name', 'http://www.sampleadvisor.com', 1, 'Need times for Weds'),
+    (1, 'reached', 'Sample Project 3', 'http://www.sampleurl.com','Advisor Name', 'http://www.sampleadvisor.com', 1, 'Follow up question'),
+    (3, 'none', 'Sample Project 4', 'http://www.sampleurl.com','Advisor Name', 'http://www.sampleadvisor.com', 1, 'Notes'),
+    (5, 'reached', 'Sample Project 5', 'http://www.sampleurl.com','Advisor Name', 'http://www.sampleadvisor.com', 1, 'Note');
 
 COMMIT;

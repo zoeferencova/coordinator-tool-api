@@ -1,13 +1,13 @@
 const TemplatesService = {
     getAllTemplates(db, userId) {
         return db
-            .from('coordinator_templates AS template')
+            .from('coordinator_templates')
             .select(
-                'template.id',
-                'template.user_id',
-                'template.template_name',
-                'template.template_subject',
-                'template.template_content'
+                'coordinator_templates.id',
+                'coordinator_templates.user_id',
+                'coordinator_templates.template_name',
+                'coordinator_templates.template_subject',
+                'coordinator_templates.template_content'
             )
             .where({ user_id: userId })
     },

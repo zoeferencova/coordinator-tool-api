@@ -60,7 +60,7 @@ describe('List Items Endpoints', function() {
             })
         })
 
-        context.skip(`Given an XSS attack article`, () => {
+        context(`Given an XSS attack article`, () => {
             beforeEach('insert list items', () =>
                 helpers.seedTables(
                     db,
@@ -110,7 +110,9 @@ describe('List Items Endpoints', function() {
         it(`creates a list item, responding with 201 and the new item`, function() {
             const newItem = {
                 project: 'New Project',
+                project_url: 'http://www.projecturltest.com',
                 advisor: 'New Advisor',
+                advisor_url: 'http://www.advisorurltest.com',
                 pm_id: 1,
                 notes: 'Notes'
             }
@@ -124,7 +126,9 @@ describe('List Items Endpoints', function() {
                 .expect(201)
                 .expect(res => {
                     expect(res.body.project).to.eql(newItem.project)
+                    expect(res.body.project_url).to.eql(newItem.project_url)
                     expect(res.body.advisor).to.eql(newItem.advisor)
+                    expect(res.body.advisor_url).to.eql(newItem.advisor_url)
                     expect(res.body.pm_name).to.eql(foundPm.pm_name)
                     expect(res.body.pm_email).to.eql(foundPm.pm_email)
                     expect(res.body.notes).to.eql(newItem.notes)
@@ -179,17 +183,17 @@ describe('List Items Endpoints', function() {
             )
 
             it(`responds with 204 and removes the list item`, () => {
-                const idToRemove = 3;
+                const idToRemove = 1;
                 const filteredItems = testListItems.filter(item => item.id !== idToRemove)
-                const expectedListItems = helpers.makeExpectedListItems(filteredItems, testUsers[2], testPms)
+                const expectedListItems = helpers.makeExpectedListItems(filteredItems, testUsers[1], testPms)
                 return supertest(app)
                     .delete(`/api/list/${idToRemove}`)
-                    .set('Authorization', helpers.makeAuthHeader(testUsers[2]))
+                    .set('Authorization', helpers.makeAuthHeader(testUsers[1]))
                     .expect(204)
                     .then(res => {
                         return supertest(app)
                             .get('/api/list')
-                            .set('Authorization', helpers.makeAuthHeader(testUsers[2]))
+                            .set('Authorization', helpers.makeAuthHeader(testUsers[1]))
                             .expect(200, expectedListItems)
                     })
             })

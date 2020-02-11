@@ -12,7 +12,9 @@ const serializeItem = item => ({
     id: item.id,
     status: item.status,
     project: xss(item.project),
+    project_url: xss(item.project_url),
     advisor: xss(item.advisor),
+    advisor_url: xss(item.advisor_url),
     date_created: new Date(item.date_created),
     notes: xss(item.notes),
     pm_name: item.pm_name,
@@ -48,6 +50,8 @@ listItemsRouter
             }
         }
         newItem.notes = req.body.notes;
+        newItem.advisor_url = req.body.advisor_url;
+        newItem.project_url = req.body.project_url;
         
         ListItemsService.insertItem(
             req.app.get('db'),
@@ -97,8 +101,8 @@ listItemsRouter
     })
     .patch(jsonBodyParser, (req, res, next) => {
         console.log(req.body);
-        const { project, advisor, status, pm_id, notes } = req.body;
-        const itemToUpdate = { project, advisor, status, pm_id, notes }
+        const { project, project_url, advisor, advisor_url, status, pm_id, notes, date_completed } = req.body;
+        const itemToUpdate = { project, project_url, advisor, advisor_url, status, pm_id, notes, date_completed }
         
         const numberOfValues = Object.values(itemToUpdate).filter(Boolean).length;
 

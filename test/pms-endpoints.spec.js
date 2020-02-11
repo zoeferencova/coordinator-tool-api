@@ -2,7 +2,7 @@ const knex = require('knex');
 const app = require('../src/app');
 const helpers = require('./test-helpers');
 
-describe.only('PMs Endpoints', function() {
+describe('PMs Endpoints', function() {
     let db;
 
     const {
@@ -107,6 +107,46 @@ describe.only('PMs Endpoints', function() {
                     })
             })
         })
+    })
+
+    describe(`DELETE /pm/:id`, () => {
+        context('Given no PMs', () => {
+            it('responds with 404', () => {
+                const pmId = 12345;
+                return supertest(app)
+                    .delete(`/api/pms/${pmId}`)
+                    .expect(404, { error: { message: `PM doesn't exist` } })
+            })
+        })
+        context(`Given there are PMs in the database`, () => {
+            beforeEach('insert items', () =>
+                helpers.seedTables(
+                    db,
+                    testUsers,
+                    testPms,
+                    testListItems,
+                    testTemplates
+                )
+            )
+
+            it(`responds with 204 and removes the PM`, () => {
+                const idToRemove = 2;
+                const filteredPms = testPms.filter(pm => pm.id !== idToRemove)
+                const expectedPms = helpers.makeExpectedPms(testUsers[1].id, filteredPms)
+                return supertest(app)
+                    .delete(`/api/pms/${idToRemove}`)
+                    .set('Authorization', helpers.makeAuthHeader(testUsers[1]))
+                    .expect(204)
+                    .then(res => {
+                        return supertest(app)
+                            .get('/api/pms')
+                            .set('Authorization', helpers.makeAuthHeader(testUsers[1]))
+                            .expect(200, expectedPms)
+                    })
+            })
+        })
+
+        
     })
 
 
