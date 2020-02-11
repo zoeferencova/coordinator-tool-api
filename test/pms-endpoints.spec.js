@@ -2,7 +2,7 @@ const knex = require('knex');
 const app = require('../src/app');
 const helpers = require('./test-helpers');
 
-describe('PMs Endpoints', function() {
+describe.only('PMs Endpoints', function() {
     let db;
 
     const {
@@ -60,4 +60,54 @@ describe('PMs Endpoints', function() {
             })
         })
     })
+
+    describe(`POST /api/pms`, () => {
+        beforeEach('insert users', () =>
+                helpers.seedTables(
+                    db,
+                    testUsers,
+                )
+            )
+        it(`creates a pm, responding with 201 and the new pm`, function() {
+            const newPm = {
+                pm_name: 'Test PM',
+                pm_email: 'test@pm.com',
+            }
+            
+            return supertest(app)
+                .post('/api/pms')
+                .set('Authorization', helpers.makeAuthHeader(testUsers[1]))
+                .send(newPm)
+                .expect(201)
+                .expect(res => {
+                    expect(res.body.pm_name).to.eql(newPm.pm_name)
+                    expect(res.body.pm_email).to.eql(newPm.pm_email)
+                    expect(res.body).to.have.property('id')
+                    expect(res.body.user_id).to.eql(testUsers[1].id)
+                })
+                
+        })
+        const requiredFields = ['pm_name', 'pm_email']
+
+        requiredFields.forEach(field => {
+            const newPm = {
+                pm_name: 'Test PM',
+                pm_email: 'test@pm.com',
+            }
+
+            it(`responds with 400 and an error message when the '${field}' is missing`, () => {
+                delete newPm[field]
+
+                return supertest(app)
+                    .post('/api/pms')
+                    .set('Authorization', helpers.makeAuthHeader(testUsers[1]))
+                    .send(newPm)
+                    .expect(400, {
+                        error: { message: `Missing '${field}' in request body` }
+                    })
+            })
+        })
+    })
+
+
 })
