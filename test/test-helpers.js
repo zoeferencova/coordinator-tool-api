@@ -300,11 +300,14 @@ function seedTables(db, users, pms, list_items, templates) {
     
     await seedUsers(trx, users)
 
-    await trx.into('coordinator_pms').insert(pms)
-    await trx.raw(
-        `SELECT setval('coordinator_pms_id_seq', ?)`,
-        [pms[pms.length - 1].id],
+    if (pms) {
+      await trx.into('coordinator_pms').insert(pms)
+      await trx.raw(
+          `SELECT setval('coordinator_pms_id_seq', ?)`,
+          [pms[pms.length - 1].id],
     )
+    }
+    
     if (list_items) {
       await trx.into('coordinator_list_items').insert(list_items)
       // update the auto sequence to match the forced id values

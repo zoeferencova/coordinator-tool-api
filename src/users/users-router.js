@@ -12,7 +12,6 @@ usersRouter
         const bearerToken = authToken.slice(7, authToken.length)
         const payload = AuthService.verifyJwt(bearerToken);
         const userId = payload.user_id;
-        console.log(payload)
         UsersService.getUserInfo(req.app.get('db'), userId)
         .then(user => {
             return res.json(user)

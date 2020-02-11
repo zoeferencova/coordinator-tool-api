@@ -2,7 +2,7 @@ const knex = require('knex');
 const app = require('../src/app');
 const helpers = require('./test-helpers');
 
-describe('Templates Endpoints', function() {
+describe.only('Templates Endpoints', function() {
     let db;
 
     const {
@@ -57,6 +57,57 @@ describe('Templates Endpoints', function() {
                     .get('/api/templates')
                     .set('Authorization', helpers.makeAuthHeader(testUsers[1]))
                     .expect(200, expectedTemplates)
+            })
+        })
+    })
+
+    describe(`POST /api/templates`, () => {
+        beforeEach('insert users', () =>
+                helpers.seedTables(
+                    db,
+                    testUsers,
+                )
+            )
+        it(`creates a template, responding with 201 and the new template`, function() {
+            const newTemplate = {
+                template_name: 'Test Template',
+                template_subject: 'Test Subject',
+                template_content: 'Test Content',
+            }
+            
+            return supertest(app)
+                .post('/api/templates')
+                .set('Authorization', helpers.makeAuthHeader(testUsers[1]))
+                .send(newTemplate)
+                .expect(201)
+                .expect(res => {
+                    expect(res.body.template_name).to.eql(newTemplate.template_name)
+                    expect(res.body.template_subject).to.eql(newTemplate.template_subject)
+                    expect(res.body.template_content).to.eql(newTemplate.template_content)
+                    expect(res.body).to.have.property('id')
+                    expect(res.body.user_id).to.eql(testUsers[1].id)
+                })
+                
+        })
+        const requiredFields = ['template_name', 'template_subject', 'template_content']
+
+        requiredFields.forEach(field => {
+            const newTemplate = {
+                template_name: 'Test Template',
+                template_subject: 'Test Subject',
+                template_content: 'Test Content',
+            }
+
+            it(`responds with 400 and an error message when the '${field}' is missing`, () => {
+                delete newTemplate[field]
+
+                return supertest(app)
+                    .post('/api/templates')
+                    .set('Authorization', helpers.makeAuthHeader(testUsers[1]))
+                    .send(newTemplate)
+                    .expect(400, {
+                        error: { message: `Missing '${field}' in request body` }
+                    })
             })
         })
     })
