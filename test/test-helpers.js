@@ -106,7 +106,7 @@ function makeTemplatesArray(users) {
     },
     {
         id: 2,
-        user_id: users[1].id,
+        user_id: users[2].id,
         template_name: 'Second test template!',
         template_subject: 'Template Subject',
         template_content: 'Hello, this is a test template. Thanks. Best, Zoe',
@@ -120,7 +120,7 @@ function makeTemplatesArray(users) {
     },
     {
         id: 4,
-        user_id: users[3].id,
+        user_id: users[2].id,
         template_name: 'Fourth test template!',
         template_subject: 'Template Subject',
         template_content: 'Hello, this is a test template. Thanks. Best, Zoe',
@@ -186,17 +186,23 @@ function makeExpectedListItem(item, pms) {
   return item;
 }
 
-function makeExpectedTemplate(users, template) {
-  const user = users
-    .find(user => user.id === template.user_id)
-
+function makeExpectedTemplate(template, userId) {
     return {
         id: template.id,
-        user_id: user.id,
+        user_id: userId,
         template_name: template.template_name,
         template_subject: template.template_subject,
         template_content: template.template_content,
     }
+}
+
+function makeExpectedTemplates(userId, templates) {
+  const usersTemplates = templates.filter(template => template.user_id === userId)
+  const expectedTemplates = usersTemplates.map(template => {
+    return {...template, user_id: userId}
+  })
+  
+  return expectedTemplates;
 }
 
 function makeExpectedUserInformation(user) {
@@ -362,6 +368,8 @@ module.exports = {
   makePmsArray,
   makeMaliciousListItem,
   makeMaliciousTemplate,
+  makeExpectedTemplate,
+  makeExpectedTemplates,
   makeExpectedListItems,
   makeExpectedListItem,
   makeExpectedUserInformation,

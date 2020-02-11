@@ -42,8 +42,6 @@ templatesRouter
                 })
             }
         }
-
-        console.log(newTemplate)
         
         TemplatesService.insertTemplate(
             req.app.get('db'),
@@ -82,5 +80,39 @@ templatesRouter
                 return res.json(serializeTemplate(template))
             })
     })
+    .delete((req, res, next) => {
+        const id = req.params.id;
+        TemplatesService.deleteTemplate(req.app.get('db'), id)
+           .then(id => {
+               res.status(204).end()
+           })
+           .catch(next)
+    })
+    .patch(jsonBodyParser, (req, res, next) => {
+        console.log(req.body);
+        const { template_name, template_subject, template_content } = req.body;
+        const templateToUpdate = { template_name, template_subject, template_content }
+        
+        const numberOfValues = Object.values(templateToUpdate).filter(Boolean).length;
+
+        if (numberOfValues === 0) {
+            return res.status(400).json({
+                error: {
+                    message: `Request body must contain either 'template_name', 'template_subject' or 'template_content'`
+                }
+            })
+        }
+
+        TemplatesService.updateTemplate(
+            req.app.get('db'),
+            req.params.id,
+            templateToUpdate
+        )
+            .then(numRowsAffected => {
+                res.status(204).end()
+            })
+            .catch(next)
+    })
+    
 
 module.exports = templatesRouter;

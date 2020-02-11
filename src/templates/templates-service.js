@@ -32,6 +32,19 @@ const TemplatesService = {
             .then(([template]) => template)
             .then(template => TemplatesService.getById(db, template.id))
     },
+    deleteTemplate(db, templateId) {
+        return db
+            .from('coordinator_templates')
+            .where({ id: Number(templateId)})
+            .del()
+    },
+    updateTemplate(db, templateId, newTemplateFields) {
+        return db
+            .from('coordinator_templates')
+            .where({ id: Number(templateId) })
+            .update(newTemplateFields)
+
+    }
 }
 
 module.exports = TemplatesService;
