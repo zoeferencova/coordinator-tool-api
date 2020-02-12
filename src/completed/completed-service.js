@@ -21,7 +21,7 @@ const CompletedService = {
             )
             .where('coordinator_pms.user_id', '=', userId)
             .join('coordinator_pms', {'coordinator_list_items.pm_id': 'coordinator_pms.id'})  
-            
+            .orderBy('coordinator_list_items.date_completed', 'desc') 
     },
     
 }
