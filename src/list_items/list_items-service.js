@@ -44,7 +44,7 @@ const ListItemsService = {
             )
             .where('coordinator_pms.user_id', '=', userId)
             .join('coordinator_pms', {'coordinator_list_items.pm_id': 'coordinator_pms.id'})  
-            .orderBy('coordinator_list_items.date_created', 'desc')
+            .orderBy('coordinator_list_items.date_created', 'asc')
     },
     insertItem(db, newItem) {
         return db
