@@ -16,9 +16,9 @@ completedRouter
         const payload = AuthService.verifyJwt(bearerToken);
         const userId = payload.user_id;
         CompletedService.getCompletedItems(req.app.get('db'), userId)
-        .then(items => {
-            return res.json(items)
-        })
+            .then(items => {
+                return res.json(items)
+            })
     })
 
 module.exports = completedRouter;

@@ -9,7 +9,8 @@ const listItemsRouter = require('./list_items/list_items-router');
 const pmsRouter = require('./pms/pms-router');
 const templatesRouter = require('./templates/templates-router');
 const authRouter = require('./auth/auth-router');
-const completedRouter = require('./completed/completed-router')
+const completedRouter = require('./completed/completed-router');
+const dataRouter = require('./data/data-router');
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.use('/api/pms', pmsRouter);
 app.use('/api/templates', templatesRouter);
 app.use('/api/auth', authRouter)
 app.use('/api/completed', completedRouter)
+app.use('/api/data', dataRouter)
 
 app.use(function errorHandler(error, req, res, next) {
     let response;
