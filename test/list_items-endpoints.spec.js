@@ -42,6 +42,7 @@ describe('List Items Endpoints', function() {
 
         context('Given there are list items in the database', () => {
             beforeEach('insert list items', () =>
+            
                 helpers.seedTables(
                     db,
                     testUsers,
@@ -89,7 +90,6 @@ describe('List Items Endpoints', function() {
             expectedListItem.title = 'Malicious project &lt;script&gt;alert(\"xss\");&lt;/script&gt;';
             expectedListItem.notes = `Bad image <img src="https://url.to.file.which/does-not.exist">.`;
             
-            console.log(maliciousListItem)
             it('removes XSS attack content', () => {
                 return supertest(app)
                     .get(`/api/list`)

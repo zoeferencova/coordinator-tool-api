@@ -136,7 +136,6 @@ describe('Templates Endpoints', function() {
                 const idToRemove = 3;
                 const filteredTemplates = testTemplates.filter(template => template.id !== idToRemove)
                 const expectedTemplates = helpers.makeExpectedTemplates(testUsers[2].id, filteredTemplates)
-                console.log(filteredTemplates)
                 return supertest(app)
                     .delete(`/api/templates/${idToRemove}`)
                     .set('Authorization', helpers.makeAuthHeader(testUsers[2]))
