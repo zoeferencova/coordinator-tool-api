@@ -71,9 +71,10 @@ describe('List Items Endpoints', function() {
                     testTemplates
                 )
             )
+
             const maliciousListItem = {
                 id: 911,
-                user_id: testUsers[0].id,
+                user_id: testUsers[1].id,
                 status: 'none',
                 project: 'Malicious project <script>alert("xss");</script>',
                 advisor: 'Bad advisor',
@@ -83,19 +84,17 @@ describe('List Items Endpoints', function() {
             }
 
             beforeEach('insert malicious item', () => {
-                helpers.seedMaliciousListItem(db, testUsers[0], maliciousListItem )
+                helpers.seedMaliciousListItem(db, testUsers[1], maliciousListItem )
             })
 
-            const expectedListItem = helpers.makeExpectedListItem(maliciousListItem, testPms)
-            expectedListItem.title = 'Malicious project &lt;script&gt;alert(\"xss\");&lt;/script&gt;';
-            expectedListItem.notes = `Bad image <img src="https://url.to.file.which/does-not.exist">.`;
-            
+            const expected = helpers.makeExpectedListItem(maliciousListItem, testPms)
+            const expectedXSS = {...expected, title:'Malicious project &lt;script&gt;alert(\"xss\");&lt;/script&gt;', notes: `Bad image <img src="https://url.to.file.which/does-not.exist">.` }
+
             it('removes XSS attack content', () => {
                 return supertest(app)
                     .get(`/api/list`)
-                    .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
-                    .expect(200)
-                    .expect(res => res.body).to.eql(expectedListItem)
+                    .set('Authorization', helpers.makeAuthHeader(testUsers[1]))
+                    .expect(200, expectedXSS)
             })
         })
     })
@@ -225,6 +224,7 @@ describe('List Items Endpoints', function() {
                     testTemplates
                 )
             )
+            
 
             it(`responds with 204 and updates the item`, () => {
                 const idToUpdate = 3;
@@ -256,7 +256,7 @@ describe('List Items Endpoints', function() {
                     )
             })
 
-            it.skip(`responds with 400 when no required fields supplied`, () => {
+            it(`responds with 400 when no required fields supplied`, () => {
                 const idToUpdate = 3;
                 return supertest(app)
                     .patch(`/api/list/${idToUpdate}`)
@@ -268,7 +268,7 @@ describe('List Items Endpoints', function() {
                     })
             })
 
-            it.skip(`responds with 204 when updating only a subset of fields`, () => {
+            it(`responds with 204 when updating only a subset of fields`, () => {
                 const idToUpdate = 3;
                 const updateItem = {
                     project: 'Updated Project Name'

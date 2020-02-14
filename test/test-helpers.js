@@ -40,7 +40,7 @@ function makeListItemsArray(users, pms) {
         project_url: 'http://www.fakeproject.com',
         advisor: 'Test Advisor',
         advisor_url: 'http://www.fakeadv.com',
-        pm_id: pms[1].id,
+        pm_id: 1,
         date_created: new Date('2029-01-22T16:28:32.615Z'),
         date_completed: new Date('2029-01-26T16:28:32.615Z'),
         notes: 'Lorem ipsum dolor sit amet',
@@ -53,7 +53,7 @@ function makeListItemsArray(users, pms) {
         project_url: 'http://www.fakeproject.com',
         advisor: 'Test Advisor',
         advisor_url: '',
-        pm_id: pms[1].id,
+        pm_id: 2,
         date_created: new Date('2029-01-22T16:28:32.615Z'),
         notes: 'Lorem ipsum dolor sit amet',
     },
@@ -65,7 +65,7 @@ function makeListItemsArray(users, pms) {
         project_url: 'http://www.fakeproject.com',
         advisor: 'Test Advisor',
         advisor_url: '',
-        pm_id: pms[2].id,
+        pm_id: 1,
         date_created: new Date('2029-01-22T16:28:32.615Z'),
         notes: 'Lorem ipsum dolor sit amet',
     },
@@ -77,7 +77,7 @@ function makeListItemsArray(users, pms) {
         project_url: 'http://www.fakeproject.com',
         advisor: 'Test Advisor',
         advisor_url: 'http://www.fakeadv.com',
-        pm_id: pms[0].id,
+        pm_id: 2,
         date_created: new Date('2029-01-22T16:28:32.615Z'),
         date_completed: new Date('2029-01-24T16:28:32.615Z'),
         notes: 'Lorem ipsum dolor sit amet',
@@ -90,7 +90,7 @@ function makeListItemsArray(users, pms) {
       project_url: '',
       advisor: 'Test Advisor',
       advisor_url: 'http://www.fakeadv.com',
-      pm_id: pms[3].id,
+      pm_id: 3,
       date_created: new Date('2029-01-22T16:28:32.615Z'),
       notes: 'Lorem ipsum dolor sit amet',
   },
@@ -102,7 +102,7 @@ function makeListItemsArray(users, pms) {
     project_url: '',
     advisor: 'Test Advisor',
     advisor_url: '',
-    pm_id: pms[2].id,
+    pm_id: 2,
     date_created: new Date('2029-01-22T16:28:32.615Z'),
     notes: 'Lorem ipsum dolor sit amet',
 },
@@ -178,12 +178,10 @@ function makeExpectedListItems(list, user, pms) {
     
     const expectedList = filteredList.map(item => { 
       const pm = pms.find(pm => pm.id === item.pm_id)
-      item.pm_name = pm.pm_name;
-      item.pm_email = pm.pm_email;
-      delete item['pm_id'];
-      delete item['user_id'];
-      item.date_created = item.date_created.toISOString();
-      return item;
+      const expected = {...item, pm_name: pm.pm_name, pm_email: pm.pm_email, date_created: item.date_created.toISOString() }
+      delete expected['pm_id']
+      delete expected['user_id']
+      return expected;
     }) 
     
     return expectedList;
@@ -191,11 +189,10 @@ function makeExpectedListItems(list, user, pms) {
 
 function makeExpectedListItem(item, pms) {
   const pm = pms.find(pm => pm.id === item.pm_id)
-  item.pm_name = pm.pm_name;
-  item.pm_email = pm.pm_email;
-  delete item['pm_id'];
-  item.date_created = item.date_created.toISOString();
-  return item;
+  const expected = {...item, pm_name: pm.pm_name, pm_email: pm.pm_email, date_created: item.date_created.toISOString() }
+  delete expected['pm_id']
+  delete expected['user_id']
+  return expected
 }
 
 function makeExpectedTemplate(template, userId) {
@@ -320,12 +317,15 @@ function seedUsers(db, users) {
 }
 
 function seedTables(db, users, pms, list_items, templates) {
+  
   // use a transaction to group the queries and auto rollback on any failure
   return db.transaction(async trx => {
+    
     await trx.into('coordinator_users').insert(users)
     await trx.into('coordinator_pms').insert(pms)
-    await trx.into('coordinator_templates').insert(templates)
     await trx.into('coordinator_list_items').insert(list_items)
+    await trx.into('coordinator_templates').insert(templates)
+   
 
     await Promise.all([
       trx.raw(
