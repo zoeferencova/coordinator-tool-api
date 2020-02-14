@@ -66,6 +66,9 @@ describe('PMs Endpoints', function() {
                 helpers.seedTables(
                     db,
                     testUsers,
+                    testPms,
+                    testListItems,
+                    testTemplates
                 )
             )
         it(`creates a pm, responding with 201 and the new pm`, function() {

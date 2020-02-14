@@ -67,6 +67,8 @@ describe('List Items Endpoints', function() {
                     db,
                     testUsers,
                     testPms,
+                    testListItems,
+                    testTemplates
                 )
             )
             const maliciousListItem = {
@@ -81,9 +83,7 @@ describe('List Items Endpoints', function() {
             }
 
             beforeEach('insert malicious item', () => {
-                return db
-                    .into('coordinator_list_items')
-                    .insert(maliciousListItem)
+                helpers.seedMaliciousListItem(db, testUsers[0], maliciousListItem )
             })
 
             const expectedListItem = helpers.makeExpectedListItem(maliciousListItem, testPms)
@@ -99,14 +99,17 @@ describe('List Items Endpoints', function() {
             })
         })
     })
+    
     describe(`POST /list`, () => {
         beforeEach('insert list items', () =>
-                helpers.seedTables(
-                    db,
-                    testUsers,
-                    testPms,
-                )
+            helpers.seedTables(
+                db,
+                testUsers,
+                testPms,
+                testListItems,
+                testTemplates
             )
+        )
         it(`creates a list item, responding with 201 and the new item`, function() {
             const newItem = {
                 project: 'New Project',

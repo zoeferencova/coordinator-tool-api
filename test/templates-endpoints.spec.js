@@ -63,10 +63,13 @@ describe('Templates Endpoints', function() {
 
     describe(`POST /api/templates`, () => {
         beforeEach('insert users', () =>
-                helpers.seedTables(
-                    db,
-                    testUsers,
-                )
+            helpers.seedTables(
+                db,
+                testUsers,
+                testPms,
+                testListItems,
+                testTemplates
+            )
             )
         it(`creates a template, responding with 201 and the new template`, function() {
             const newTemplate = {

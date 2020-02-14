@@ -249,8 +249,6 @@ function makeMaliciousListItem(user, pm) {
     title: 'Malicious project &lt;script&gt;alert(\"xss\");&lt;/script&gt;',
     content: `Bad image <img src="https://url.to.file.which/does-not.exist">.`,
   }
-
-  console.log(expectedListItem)
   return expectedListItem
 }
 
@@ -324,35 +322,29 @@ function seedUsers(db, users) {
 function seedTables(db, users, pms, list_items, templates) {
   // use a transaction to group the queries and auto rollback on any failure
   return db.transaction(async trx => {
-    
-    await seedUsers(trx, users)
+    await trx.into('coordinator_users').insert(users)
+    await trx.into('coordinator_pms').insert(pms)
+    await trx.into('coordinator_templates').insert(templates)
+    await trx.into('coordinator_list_items').insert(list_items)
 
-    if (pms) {
-      await trx.into('coordinator_pms').insert(pms)
-      await trx.raw(
-          `SELECT setval('coordinator_pms_id_seq', ?)`,
-          [pms[pms.length - 1].id],
-    )
-    }
-    
-    if (list_items) {
-      await trx.into('coordinator_list_items').insert(list_items)
-      // update the auto sequence to match the forced id values
-      await trx.raw(
+    await Promise.all([
+      trx.raw(
+        `SELECT setval('coordinator_users_id_seq', ?)`,
+        [users[users.length - 1].id],
+      ),
+      trx.raw(
+        `SELECT setval('coordinator_pms_id_seq', ?)`,
+        [pms[pms.length - 1].id],
+      ),
+      trx.raw(
+        `SELECT setval('coordinator_templates_id_seq', ?)`,
+        [templates[templates.length - 1].id],
+      ),
+      trx.raw(
         `SELECT setval('coordinator_list_items_id_seq', ?)`,
-        [list_items[list_items.length - 1].id]
-      )
-    }
-    
-    if (templates) {
-      await trx.into('coordinator_templates').insert(templates)
-      await trx.raw(
-          `SELECT setval('coordinator_templates_id_seq', ?)`,
-          [templates[templates.length - 1].id],
-      )
-    }
-
-    
+        [list_items[list_items.length - 1].id],
+      ),
+    ])
   })
 }
 
