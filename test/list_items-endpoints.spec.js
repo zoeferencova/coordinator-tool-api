@@ -60,44 +60,6 @@ describe('List Items Endpoints', function() {
                     .expect(200, expectedListItems)
             })
         })
-
-        context(`Given an XSS attack article`, () => {
-            beforeEach('insert list items', () =>
-                helpers.seedTables(
-                    db,
-                    testUsers,
-                    testPms,
-                    testListItems,
-                    testTemplates
-                )
-            )
-
-            const maliciousListItem = {
-                id: 911,
-                user_id: testUsers[1].id,
-                status: 'none',
-                project: 'Malicious project <script>alert("xss");</script>',
-                advisor: 'Bad advisor',
-                pm_id: testPms[0].id,
-                date_created: new Date(),
-                notes: `Bad image <img src="https://url.to.file.which/does-not.exist" onerror="alert(document.cookie);">.`,
-            }
-
-            beforeEach('insert malicious item', () => {
-                helpers.seedMaliciousListItem(db, testUsers[1], maliciousListItem )
-            })
-
-            const expected = helpers.makeExpectedListItem(maliciousListItem, testPms)
-            const expectedXSS = {...expected, title:'Malicious project &lt;script&gt;alert(\"xss\");&lt;/script&gt;', notes: `Bad image <img src="https://url.to.file.which/does-not.exist">.` }
-
-            it('removes XSS attack content', () => {
-                return supertest(app)
-                    .get(`/api/list`)
-                    .set('Authorization', helpers.makeAuthHeader(testUsers[1]))
-                    .expect(200, expectedXSS)
-            })
-        })
-    })
     
     describe(`POST /list`, () => {
         beforeEach('insert list items', () =>
@@ -298,4 +260,4 @@ describe('List Items Endpoints', function() {
             })
         })
     })
-})
+})})

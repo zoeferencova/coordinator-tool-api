@@ -348,24 +348,6 @@ function seedTables(db, users, pms, list_items, templates) {
   })
 }
 
-function seedMaliciousListItem(db, user, list_item) {
-  return seedUsers(db, [user])
-    .then(() =>
-      db
-        .into('coordinator_list_items')
-        .insert([list_item])
-    )
-}
-
-function seedMaliciousTemplate(db, user, template) {
-    return seedUsers(db, [user])
-      .then(() =>
-        db
-          .into('coordinator_templates')
-          .insert([template])
-      )
-}
-
 function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
   const token = jwt.sign({ user_id: user.id }, secret, {
     subject: user.email,
@@ -391,8 +373,6 @@ module.exports = {
   makeFixtures,
   cleanTables,
   seedTables,
-  seedMaliciousListItem,
-  seedMaliciousTemplate,
   makeAuthHeader,
   seedUsers,
 }
