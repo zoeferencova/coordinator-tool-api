@@ -40,8 +40,10 @@ listItemsRouter
         newItem.user_id = req.user.id;
         newItem.status = 'none';
 
+        console.log(newItem)
+
         for (const [key, value] of Object.entries(newItem)) {
-            if (value === null || value === undefined) {
+            if (value === '' || value === undefined) {
                 return res.status(400).json({
                     error: {
                         message: `Missing '${key}' in request body`
@@ -100,11 +102,22 @@ listItemsRouter
            .catch(next)
     })
     .patch(jsonBodyParser, (req, res, next) => {
-        console.log(req.body);
         const { project, project_url, advisor, advisor_url, status, pm_id, notes, date_completed } = req.body;
         const itemToUpdate = { project, project_url, advisor, advisor_url, status, pm_id, notes, date_completed }
         
         const numberOfValues = Object.values(itemToUpdate).filter(Boolean).length;
+        const requiredValues = {project, advisor, pm_id}
+
+
+        for (const [key, value] of Object.entries(requiredValues)) {
+            if (value === '' || value === undefined) {
+                return res.status(400).json({
+                    error: {
+                        message: `Missing '${key}' in request body`
+                    }
+                })
+            }
+        }
 
         if (numberOfValues === 0) {
             return res.status(400).json({
@@ -113,6 +126,8 @@ listItemsRouter
                 }
             })
         }
+
+        console.log(itemToUpdate)
 
         ListItemsService.updateItem(
             req.app.get('db'),

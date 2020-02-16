@@ -17,6 +17,7 @@ const serializePm = pm => ({
 
 pmsRouter
     .route('/')
+    .all(requireAuth)
     .get((req, res, next) => {
         const authToken = req.get('Authorization');
         const bearerToken = authToken.slice(7, authToken.length)
@@ -33,7 +34,7 @@ pmsRouter
         newPm.user_id = req.user.id;
 
         for (const [key, value] of Object.entries(newPm)) {
-            if (value === null || value === undefined) {
+            if (value === '' || value === undefined) {
                 return res.status(400).json({
                     error: {
                         message: `Missing '${key}' in request body`

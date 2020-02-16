@@ -18,6 +18,7 @@ const serializeTemplate = template => ({
 
 templatesRouter
     .route('/')
+    .all(requireAuth)
     .get((req, res, next) => {
         const authToken = req.get('Authorization');
         const bearerToken = authToken.slice(7, authToken.length)
@@ -34,7 +35,7 @@ templatesRouter
         newTemplate.user_id = req.user.id;
 
         for (const [key, value] of Object.entries(newTemplate)) {
-            if (value === null || value === undefined) {
+            if (value === '' || value === undefined) {
                 return res.status(400).json({
                     error: {
                         message: `Missing '${key}' in request body`
