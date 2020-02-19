@@ -53,7 +53,6 @@ const DataService = {
             .groupBy('coordinator_list_items.pm_id')
     },
     getTimespanData(db, userId) {
-        const data = []
             return db.transaction(trx => {
                 timeSpans.forEach((span, i) => {
                     const query = db('coordinator_list_items')
