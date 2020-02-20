@@ -26,20 +26,30 @@ function generateTimeSpans() {
     ]
 
     const units = {
-        days: 7,
-        weeks: 4,
-        months: 6
+        days: 6,
+        weeks: 3,
+        months: 5
+    }
+
+    makeFormattedSpan = (unit, i) => {
+        if (unit === 'days') {
+            return `${moment().startOf(`${unit}`).subtract(i+1, `${unit}`).format('MMM D')}`
+        } else if (unit === 'weeks') {
+            return `${moment().startOf(`${unit}`).subtract(i+1, `${unit}`).format('MMM D')} - ${moment().startOf(`${unit}`).subtract(i, `${unit}`).format('MMM D')}`
+        } else if (unit === 'months') {
+            return `${moment().startOf(`${unit}`).subtract(i+1, `${unit}`).format('MMMM')}`
+        }
     }
 
     for (let [key, value] of Object.entries(units)) {
         const unit = key;
         const number = value;
 
-        for (let i=1; i < number; i++) {
+        for (let i=0; i < number; i++) {
             timeSpans.push({
                 start: moment().startOf(`${unit}`).subtract(i+1, `${unit}`).toISOString(),
                 end: moment().startOf(`${unit}`).subtract(i, `${unit}`).toISOString(),
-                formattedSpan: `${moment().startOf(`${unit}`).subtract(i+1, `${unit}`).format('ll')} - ${moment().startOf(`${unit}`).subtract(i, `${unit}`).format('ll')}`,
+                formattedSpan: makeFormattedSpan(unit, i),
                 unit,
                 number: i,
             })
