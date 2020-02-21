@@ -1,3 +1,4 @@
+const moment = require('moment')
 
 const userDataService = {
     getAllUserData(db, userId) {
@@ -64,6 +65,7 @@ const userDataService = {
                 )
                 .where('coordinator_list_items.user_id', '=', userId)
                 .where('coordinator_list_items.status', '=', 'completed')
+                .where('coordinator_list_items.date_completed', '>', moment().subtract(2, 'weeks'))
                 .select(
                     'coordinator_pms.pm_name',
                     'coordinator_pms.pm_email'

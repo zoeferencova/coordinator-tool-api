@@ -109,25 +109,54 @@ const DataService = {
                     .catch(trx.rollback)
             })       
     },
-    getTimeCompletedData(db, userId) {
+    getTimeData(db, userId) {
         const data = []
-        const timeSpans = generateTimeSpans()
             return db.transaction(trx => {
-                timeSpans.forEach((span, i) => {
-                    const query = db('coordinator_list_items')
-                    .select(db.raw(`EXTRACT(MINUTE FROM (coordinator_list_items.date_completed - coordinator_list_items.date_created)) AS ${span.unit}_${span.number}_difference`))
-                    .where('coordinator_list_items.date_created', '>', span.start)
-                    .where('coordinator_list_items.date_created', '<', span.end)
-                    .where('coordinator_list_items.status', '=', 'completed')
-                    .where('coordinator_list_items.user_id', '=', userId)
-                    .transacting(trx)
-                    data.push(query)
-                })
+                const timeQuery = db('coordinator_list_items')
+                .select(db.raw(`coordinator_list_items.date_completed - coordinator_list_items.date_created AS difference`))
+                .where('coordinator_list_items.date_completed', '>', moment().startOf('week').toISOString())
+                .where('coordinator_list_items.date_completed', '<', moment().toISOString())
+                .where('coordinator_list_items.status', '=', 'completed')
+                .where('coordinator_list_items.user_id', '=', userId)
+                .transacting(trx)
+                data.push(timeQuery)
                 
                 Promise.all(data)
                     .then(trx.commit)
                     .catch(trx.rollback)
             })  
+    },
+    getDashboardData(db, userId) {
+        const data = []
+            return db.transaction(trx => {
+                const pendingQuery = db('coordinator_list_items')
+                .where('coordinator_list_items.status', '!=', 'completed')
+                .where('coordinator_list_items.user_id', '=', userId)
+                .count('coordinator_list_items as pending')
+                .transacting(trx)
+                data.push(pendingQuery)
+
+                const allCreatedQuery = db('coordinator_list_items')
+                .where('coordinator_list_items.date_created', '>', moment().startOf('week').toISOString())
+                .where('coordinator_list_items.date_created', '<', moment().toISOString())
+                .where('coordinator_list_items.user_id', '=', userId)
+                .count('coordinator_list_items as created')
+                .transacting(trx)
+                data.push(allCreatedQuery)
+
+                const allCompletedQuery = db('coordinator_list_items')
+                .where('coordinator_list_items.date_created', '>', moment().startOf('week').toISOString())
+                .where('coordinator_list_items.date_created', '<', moment().toISOString())
+                .where('status', '=', 'completed')
+                .where('coordinator_list_items.user_id', '=', userId)
+                .count('coordinator_list_items as completed')
+                .transacting(trx)
+                data.push(allCompletedQuery)
+
+                Promise.all(data)
+                    .then(trx.commit)
+                    .catch(trx.rollback)
+            })
     }
 }
 
