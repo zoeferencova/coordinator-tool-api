@@ -25,41 +25,6 @@ describe('List Items Endpoints', function() {
     before('cleanup', () => helpers.cleanTables(db));
 
     afterEach('cleanup', () => helpers.cleanTables(db));
-
-    describe(`GET /api/list`, () => {
-        context(`Given no list items`, () => {
-            beforeEach(() =>
-                helpers.seedUsers(db, testUsers)
-            )
-
-            it(`responds with 200 and an empty list`, () => {
-                return supertest(app)
-                    .get('/api/list')
-                    .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
-                    .expect(200, [])
-            })
-        })
-
-        context('Given there are list items in the database', () => {
-            beforeEach('insert list items', () =>
-            
-                helpers.seedTables(
-                    db,
-                    testUsers,
-                    testPms,
-                    testListItems,
-                    testTemplates
-                )
-            )
-
-            it('responds with 200 and all of the list items for the user that do not have the status completed', () => {
-                const expectedListItems = helpers.makeExpectedListItems(testListItems, testUsers[1], testPms)
-                return supertest(app)
-                    .get('/api/list')
-                    .set('Authorization', helpers.makeAuthHeader(testUsers[1]))
-                    .expect(200, expectedListItems)
-            })
-        })
     
     describe(`POST /list`, () => {
         beforeEach('insert list items', () =>
@@ -149,16 +114,26 @@ describe('List Items Endpoints', function() {
             it(`responds with 204 and removes the list item`, () => {
                 const idToRemove = 1;
                 const filteredItems = testListItems.filter(item => item.id !== idToRemove)
-                const expectedListItems = helpers.makeExpectedListItems(filteredItems, testUsers[1], testPms)
+                const expectedListItems = helpers.makeExpectedListItems(filteredItems, testUsers[0], testPms)
+                const completedItems = testListItems.filter(item => item.user_id === testUsers[0].id && item.status === 'completed')
+                const expectedCompletedItems = helpers.makeExpectedListItems(completedItems, testUsers[0], testPms)
+                const expectedPms = testPms.filter(pm => pm.user_id === testUsers[0].id)
+                const expectedTemplates = testTemplates.filter(template => template.user_id === testUsers[0].id)
+                const expectedUserData = {...testUsers[0]}
+                delete expectedUserData.id;
+                delete expectedUserData.password;
+
+                const expected = [expectedListItems, expectedPms, expectedTemplates, expectedCompletedItems, expectedUserData]
+
                 return supertest(app)
                     .delete(`/api/list/${idToRemove}`)
-                    .set('Authorization', helpers.makeAuthHeader(testUsers[1]))
+                    .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
                     .expect(204)
                     .then(res => {
                         return supertest(app)
-                            .get('/api/list')
-                            .set('Authorization', helpers.makeAuthHeader(testUsers[1]))
-                            .expect(200, expectedListItems)
+                            .get('/api/user-data')
+                            .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+                            .expect(200, expected)
                     })
             })
         })
@@ -225,39 +200,10 @@ describe('List Items Endpoints', function() {
                     .send({ irrelevantField: 'foo' })
                     .expect(400, {
                         error: {
-                            message: `Request body must contain either 'project', 'advisor', 'pm_id', 'notes' or 'status'`
+                            message: `Missing 'project' in request body`
                         }
                     })
             })
-
-            it(`responds with 204 when updating only a subset of fields`, () => {
-                const idToUpdate = 3;
-                const updateItem = {
-                    project: 'Updated Project Name'
-                }
-                const formattedItem = helpers.makeExpectedListItem(testListItems[idToUpdate - 1], testPms)
-
-                const expectedItem = {
-                    ...formattedItem,
-                    ...updateItem
-                }
-
-                delete expectedItem.pm_id;
-                delete expectedItem.user_id;
-
-                return supertest(app)
-                    .patch(`/api/list/${idToUpdate}`)
-                    .send({
-                        ...updateItem,
-                        fieldToIgnore: 'should not be in GET response'
-                    })
-                    .expect(204)
-                    .then(res => 
-                        supertest(app)
-                            .get(`/api/list/${idToUpdate}`)
-                            .expect(expectedItem)    
-                    )
-            })
         })
     })
-})})
+})
