@@ -31,8 +31,6 @@ listItemsRouter
         newItem.user_id = req.user.id;
         newItem.status = 'none';
 
-        console.log(newItem)
-
         for (const [key, value] of Object.entries(newItem)) {
             if (value === '' || value === undefined) {
                 return res.status(400).json({
@@ -117,8 +115,6 @@ listItemsRouter
                 }
             })
         }
-
-        console.log(itemToUpdate)
 
         ListItemsService.updateItem(
             req.app.get('db'),

@@ -90,7 +90,6 @@ templatesRouter
            .catch(next)
     })
     .patch(jsonBodyParser, (req, res, next) => {
-        console.log(req.body);
         const { template_name, template_subject, template_content } = req.body;
         const templateToUpdate = { template_name, template_subject, template_content }
         
