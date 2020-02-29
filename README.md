@@ -1,1 +1,1 @@
-# Coordinator Tool API Documentation
+# Coordinator Tool API
