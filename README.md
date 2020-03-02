@@ -12,7 +12,9 @@ The coordinator tool makes tracking reach-outs and organizing tasks extremely ea
 
 ### Open Endpoints
 
+Open endpoints require no Authentication.
 
+* [Login](docs/login.md) : `POST /api/login`
 
 ## Technologies Used
 
