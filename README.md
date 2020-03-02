@@ -10,11 +10,62 @@ The coordinator tool makes tracking reach-outs and organizing tasks extremely ea
 
 ## API Documentation
 
-### Open Endpoints
+### Authentication Endpoint
 
-Open endpoints require no Authentication.
+Endpoint for authentication on user login.
 
-* [Login](docs/login.md) : `POST /api/login`
+* [Login](docs/login.md) : `POST /api/auth/login`
+
+### User Endpoints
+
+Endpoints related to user information.
+
+* [Get User Info](docs/getuserinfo.md) : `GET /api/users`
+* [Create User](docs/createuser.md) : `POST /api/users`
+
+### User Data Endpoint
+
+Endpoint used to retrieve all data (list item, PM, template, completed list item, and user data) associated with logged in user.
+
+* [Get User Data](docs/getuserdata.md) : `GET /api/user-data`
+
+### List Item Endpoints
+
+Endpoints used to view and manipulate list item data related to the logged in user.
+
+* [Create List Item](docs/createitem.md) : `POST /api/list`
+* [Get List Item by ID](docs/getitembyid.md) : `GET /api/list/:id`
+* [Delete List Item by ID](docs/deleteitem.md) : `DELETE /api/list/:id`
+* [Update List Item by ID](docs/updateitem.md) : `PATCH /api/list/:id`
+
+### PM Endpoints
+
+Endpoints used to view and manipulate PM data related to the logged in user.
+
+* [Get User's PMs](docs/getuserpms.md) : `GET /api/pms`
+* [Create PM](docs/createpm.md) : `POST /api/pms`
+* [Get PM by ID](docs.getpmbyid.md): `GET /api/pms/:id`
+* [Delete PM By ID](docs.deletepm.md): `DELETE /api/pms/:id`
+
+### Template Endpoints
+
+Endpoints used to view and manipulate template data related to the logged in user.
+
+* [Get User's Templates](docs/getusertemplates.md) : `GET /api/templates`
+* [Create Template](docs/createtemplate.md) : `POST /api/templates`
+* [Get Template by ID](docs.gettemplatebyid.md): `GET /api/templates/:id`
+* [Delete Template By ID](docs.deletetemplate.md): `DELETE /api/templates/:id`
+* [Update Template by ID](docs/updatetemplate.md) : `PATCH /api/templates/:id`
+
+### Data Endpoints
+
+Endpoints used to view and manipulate quantitative data related to the logged in user for the user dashboard.
+
+* [Get PM Data](docs/getpmdata.md) : `GET /api/data/pm-data`
+* [Get Completed Timespan Data](docs/getcompletedtimespandata.md) : `GET /api/data/completed-timespan-data`
+* [Get Created Timespan Data](docs/getcreatedtimespandata.md) : `GET /api/data/created-timespan-data`
+* [Get Time Completed Data](docs/gettimecompleteddata.md) : `GET /api/data/time-completed-data`
+* [Get Dashboard Data](docs/getdashboarddata.md) : `GET /api/data/dashboard-data`
 
 ## Technologies Used
 
