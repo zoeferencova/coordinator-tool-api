@@ -9,8 +9,8 @@ const ListItemsService = {
             'coordinator_list_items.status',
             'coordinator_list_items.project',
             'coordinator_list_items.project_url',
-            'coordinator_list_items.advisor',
-            'coordinator_list_items.advisor_url',
+            'coordinator_list_items.contact',
+            'coordinator_list_items.contact_url',
             'coordinator_list_items.date_created',
             'coordinator_list_items.pm_id',
             'coordinator_list_items.notes'

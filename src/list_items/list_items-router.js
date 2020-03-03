@@ -13,8 +13,8 @@ const serializeItem = item => ({
     status: item.status,
     project: xss(item.project),
     project_url: xss(item.project_url),
-    advisor: xss(item.advisor),
-    advisor_url: xss(item.advisor_url),
+    contact: xss(item.contact),
+    contact_url: xss(item.contact_url),
     date_created: new Date(item.date_created),
     notes: xss(item.notes),
     pm_name: item.pm_name,
@@ -26,8 +26,8 @@ listItemsRouter
     .route('/')
     .all(requireAuth)
     .post(requireAuth, jsonBodyParser, (req, res, next) => {
-        const { project, advisor, pm_id } = req.body;
-        const newItem = { project, advisor, pm_id }
+        const { project, contact, pm_id } = req.body;
+        const newItem = { project, contact, pm_id }
         newItem.user_id = req.user.id;
         newItem.status = 'none';
 
@@ -41,7 +41,7 @@ listItemsRouter
             }
         }
         newItem.notes = req.body.notes;
-        newItem.advisor_url = req.body.advisor_url;
+        newItem.contact_url = req.body.contact_url;
         newItem.project_url = req.body.project_url;
         
         ListItemsService.insertItem(
@@ -91,11 +91,11 @@ listItemsRouter
            .catch(next)
     })
     .patch(jsonBodyParser, (req, res, next) => {
-        const { project, project_url, advisor, advisor_url, status, pm_id, notes, date_completed } = req.body;
-        const itemToUpdate = { project, project_url, advisor, advisor_url, status, pm_id, notes, date_completed }
+        const { project, project_url, contact, contact_url, status, pm_id, notes, date_completed } = req.body;
+        const itemToUpdate = { project, project_url, contact, contact_url, status, pm_id, notes, date_completed }
         
         const numberOfValues = Object.values(itemToUpdate).filter(Boolean).length;
-        const requiredValues = {project, advisor, pm_id}
+        const requiredValues = {project, contact, pm_id}
 
 
         for (const [key, value] of Object.entries(requiredValues)) {
@@ -111,7 +111,7 @@ listItemsRouter
         if (numberOfValues === 0) {
             return res.status(400).json({
                 error: {
-                    message: `Request body must contain either 'project', 'advisor', 'pm_id', 'notes' or 'status'`
+                    message: `Request body must contain either 'project', 'contact', 'pm_id', 'notes' or 'status'`
                 }
             })
         }

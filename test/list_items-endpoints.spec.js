@@ -40,8 +40,8 @@ describe('List Items Endpoints', function() {
             const newItem = {
                 project: 'New Project',
                 project_url: 'http://www.projecturltest.com',
-                advisor: 'New Advisor',
-                advisor_url: 'http://www.advisorurltest.com',
+                contact: 'New Contact',
+                contact_url: 'http://www.contacturltest.com',
                 pm_id: 1,
                 notes: 'Notes'
             }
@@ -56,8 +56,8 @@ describe('List Items Endpoints', function() {
                 .expect(res => {
                     expect(res.body.project).to.eql(newItem.project)
                     expect(res.body.project_url).to.eql(newItem.project_url)
-                    expect(res.body.advisor).to.eql(newItem.advisor)
-                    expect(res.body.advisor_url).to.eql(newItem.advisor_url)
+                    expect(res.body.contact).to.eql(newItem.contact)
+                    expect(res.body.contact_url).to.eql(newItem.contact_url)
                     expect(res.body.pm_name).to.eql(foundPm.pm_name)
                     expect(res.body.pm_email).to.eql(foundPm.pm_email)
                     expect(res.body.notes).to.eql(newItem.notes)
@@ -68,12 +68,12 @@ describe('List Items Endpoints', function() {
                 })
                 
         })
-        const requiredFields = ['project', 'advisor', 'pm_id']
+        const requiredFields = ['project', 'contact', 'pm_id']
 
         requiredFields.forEach(field => {
             const newItem = {
                 project: 'New Project',
-                advisor: 'New Advisor',
+                contact: 'New Contact',
                 pm_id: 1,
             }
 
@@ -167,7 +167,7 @@ describe('List Items Endpoints', function() {
                 const idToUpdate = 3;
                 const updateItem = {
                     project: 'Updated Project',
-                    advisor: 'Updated Advisor',
+                    contact: 'Updated Contact',
                     pm_id: 2,
                     status: 'none'
                 }
