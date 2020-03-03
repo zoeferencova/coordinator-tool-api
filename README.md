@@ -10,7 +10,7 @@ The coordinator tool makes tracking reach-outs and organizing tasks extremely ea
 
 ## API Documentation
 
-### Authentication Endpoint (does not require Authentication)
+### Authentication Endpoint
 
 Endpoint for Authentication on user login.
 
