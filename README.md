@@ -1,26 +1,82 @@
-# Express Boilerplate!
+# Coordinator Tool API
 
-This is a boilerplate project used for starting new projects!
+Live app: https://zoeferencova-coordinator-tool.now.sh/
 
-## Set up
+## Summary
 
-Complete the following steps to start a new project (NEW-PROJECT-NAME):
+As a client service coordinator, I found that there were many aspects of my job that were repetitive and inefficient. I would write the same email dozens of times in one day and keep track of all of my correspondence in a notebook where I had to rewrite my task list every day. I created the coordinator tool to address these pain points and automate as much of the job as possible.
 
-1. Clone this repository to your local machine `git clone BOILERPLATE-URL NEW-PROJECT-NAME`
-2. `cd` into the cloned repository
-3. Make a fresh start of the git history for this project with `rm -rf .git && git init`
-4. Install the node dependencies `npm install`
-5. Move the example Environment file to `.env` that will be ignored by git and read by the express server `mv example.env .env`
-6. Edit the contents of the `package.json` to use NEW-PROJECT-NAME instead of `"name": "express-boilerplate",`
+The coordinator tool makes tracking reach-outs and organizing tasks extremely easy. The main list tab and completed tab can be used to track, change and revert the status of items as well as link to external sites for easy navigation. Users are able to create email templates for emails that are commonly sent which then template in values from the item list so that emails can be composed and populated with values for each list item in one click. The dashboard page keeps track of some key statistics that allow the user to keep track of request volume trends as well as other insightful stats and KPI's.
 
-## Scripts
+## API Documentation
 
-Start the application `npm start`
+### Authentication Endpoint
 
-Start nodemon for the application `npm run dev`
+Endpoint for authentication on user login.
 
-Run the tests `npm test`
+* [Login](docs/login.md) : `POST /api/auth/login`
 
-## Deploying
+### User Endpoints
 
-When your new project is ready for deployment, add a new Heroku application with `heroku create`. This will make a new git remote called "heroku" and you can then `npm run deploy` which will push to this remote's master branch.
+Endpoints related to user information.
+
+* [Get User Info](docs/getuserinfo.md) : `GET /api/users`
+* [Create User](docs/createuser.md) : `POST /api/users`
+
+### User Data Endpoint
+
+Endpoint used to retrieve all data (list item, PM, template, completed list item, and user data) associated with logged in user.
+
+* [Get User Data](docs/getuserdata.md) : `GET /api/user-data`
+
+### List Item Endpoints
+
+Endpoints used to view and manipulate list item data related to the logged in user.
+
+* [Create List Item](docs/createitem.md) : `POST /api/list`
+* [Get List Item by ID](docs/getitembyid.md) : `GET /api/list/:id`
+* [Delete List Item by ID](docs/deleteitem.md) : `DELETE /api/list/:id`
+* [Update List Item by ID](docs/updateitem.md) : `PATCH /api/list/:id`
+
+### PM Endpoints
+
+Endpoints used to view and manipulate PM data related to the logged in user.
+
+* [Get User's PMs](docs/getuserpms.md) : `GET /api/pms`
+* [Create PM](docs/createpm.md) : `POST /api/pms`
+* [Get PM by ID](docs.getpmbyid.md): `GET /api/pms/:id`
+* [Delete PM By ID](docs.deletepm.md): `DELETE /api/pms/:id`
+
+### Template Endpoints
+
+Endpoints used to view and manipulate template data related to the logged in user.
+
+* [Get User's Templates](docs/getusertemplates.md) : `GET /api/templates`
+* [Create Template](docs/createtemplate.md) : `POST /api/templates`
+* [Get Template by ID](docs.gettemplatebyid.md): `GET /api/templates/:id`
+* [Delete Template By ID](docs.deletetemplate.md): `DELETE /api/templates/:id`
+* [Update Template by ID](docs/updatetemplate.md) : `PATCH /api/templates/:id`
+
+### Data Endpoints
+
+Endpoints used to view and manipulate quantitative data related to the logged in user for the user dashboard.
+
+* [Get PM Data](docs/getpmdata.md) : `GET /api/data/pm-data`
+* [Get Completed Timespan Data](docs/getcompletedtimespandata.md) : `GET /api/data/completed-timespan-data`
+* [Get Created Timespan Data](docs/getcreatedtimespandata.md) : `GET /api/data/created-timespan-data`
+* [Get Time Completed Data](docs/gettimecompleteddata.md) : `GET /api/data/time-completed-data`
+* [Get Dashboard Data](docs/getdashboarddata.md) : `GET /api/data/dashboard-data`
+
+## Technologies Used
+
+* Node.js with Express
+* PostgreSQL with Knex
+* JWT for authentication
+* Mocha for testing
+
+## Demo Account
+
+To access the demo account, sign in using the below credentials:
+
+Email: demoaccount@demo.com
+Password: DemoPassword1!
