@@ -35,7 +35,6 @@ Endpoints used to view and manipulate list item data associated with the User wh
 
 * [Get User's List Items](docs/getitems.md) : `GET /api/list`
 * [Create List Item](docs/createitem.md) : `POST /api/list`
-
 * [Get List Item by ID](docs/getitembyid.md) : `GET /api/list/:id`
 * [Delete List Item by ID](docs/deleteitem.md) : `DELETE /api/list/:id`
 * [Update List Item by ID](docs/updateitem.md) : `PATCH /api/list/:id`
@@ -46,7 +45,6 @@ Endpoints used to view and manipulate PM data associated with the User whose Tok
 
 * [Get User's PMs](docs/getuserpms.md) : `GET /api/pms`
 * [Create PM](docs/createpm.md) : `POST /api/pms`
-
 * [Get PM by ID](docs.getpmbyid.md): `GET /api/pms/:id`
 * [Delete PM By ID](docs.deletepm.md): `DELETE /api/pms/:id`
 
@@ -56,7 +54,6 @@ Endpoints used to view and manipulate template data associated with the User who
 
 * [Get User's Templates](docs/getusertemplates.md) : `GET /api/templates`
 * [Create Template](docs/createtemplate.md) : `POST /api/templates`
-
 * [Get Template by ID](docs.gettemplatebyid.md): `GET /api/templates/:id`
 * [Delete Template By ID](docs.deletetemplate.md): `DELETE /api/templates/:id`
 * [Update Template by ID](docs/updatetemplate.md) : `PATCH /api/templates/:id`
