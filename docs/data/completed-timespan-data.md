@@ -1,6 +1,6 @@
 # Get Completed Timespan Data
 
-Get data on timespan taken to complete list items if current User has access permissions to it.
+Get data on number of items that are completed within various timespans for the current User.
 
 **URL** : `/api/data/completed-timespan-data/`
 
@@ -22,32 +22,32 @@ Get data on timespan taken to complete list items if current User has access per
 [
     [
         {
-            "days_Today": "0"
+            "days_Today": "5"
         }
     ],
     [
         {
-            "weeks_This Week": "0"
+            "weeks_This Week": "19"
         }
     ],
     [
         {
-            "months_This Month": "0"
+            "months_This Month": "45"
         }
     ],
     [
         {
-            "days_Mar 2": "0"
+            "days_Mar 2": "1"
         }
     ],
     [
         {
-            "days_Mar 1": "0"
+            "days_Mar 1": "5"
         }
     ],
     [
         {
-            "days_Feb 29": "0"
+            "days_Feb 29": "3"
         }
     ],
     [
@@ -57,7 +57,7 @@ Get data on timespan taken to complete list items if current User has access per
     ],
     [
         {
-            "days_Feb 27": "0"
+            "days_Feb 27": "5"
         }
     ],
     [
@@ -67,42 +67,42 @@ Get data on timespan taken to complete list items if current User has access per
     ],
     [
         {
-            "weeks_Feb 23 - Mar 1": "0"
+            "weeks_Feb 23 - Mar 1": "17"
         }
     ],
     [
         {
-            "weeks_Feb 16 - Feb 23": "0"
+            "weeks_Feb 16 - Feb 23": "22"
         }
     ],
     [
         {
-            "weeks_Feb 9 - Feb 16": "0"
+            "weeks_Feb 9 - Feb 16": "27"
         }
     ],
     [
         {
-            "months_February": "0"
+            "months_February": "105"
         }
     ],
     [
         {
-            "months_January": "0"
+            "months_January": "133"
         }
     ],
     [
         {
-            "months_December": "0"
+            "months_December": "79"
         }
     ],
     [
         {
-            "months_November": "0"
+            "months_November": "88"
         }
     ],
     [
         {
-            "months_October": "0"
+            "months_October": "94"
         }
     ]
 ]
