@@ -18,7 +18,7 @@ Get data on timespan taken to complete list items if current User has access per
 
 **Content example**
 
-```json
+```
 {
     [
         [
