@@ -1,6 +1,6 @@
 # Coordinator Tool API
 
-Live app: https://zoeferencova-coordinator-tool.now.sh/
+Live app: https://coordinator-tool.zoeferencova.now.sh/
 
 ## Summary
 
