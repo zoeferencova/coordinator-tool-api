@@ -54,7 +54,7 @@ Get all PM data associated with the User whose Token is provided with the reques
     "error": "Missing bearer token"
 }
 ```
-## OR
+### OR
 
 **Condition** : If the provided Authorization Token is not valid.
 
