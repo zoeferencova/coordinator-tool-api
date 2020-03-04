@@ -2,7 +2,9 @@
 
 Get PM by PM ID.
 
-**URL** : `/api/pms/:id`
+**URL** : `/api/pms/:id/`
+
+**URL Parameters** : `id=[integer]` where `id` is the ID of PM.
 
 **Method** : `GET`
 

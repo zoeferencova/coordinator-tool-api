@@ -2,7 +2,9 @@
 
 Get list item by list item ID.
 
-**URL** : `/api/list/:id`
+**URL** : `/api/list/:id/`
+
+**URL Parameters** : `id=[integer]` where `id` is the ID of the list item.
 
 **Method** : `GET`
 

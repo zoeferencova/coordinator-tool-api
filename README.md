@@ -1,6 +1,6 @@
 # Coordinator Tool API
 
-Live app: https://zoeferencova-coordinator-tool.now.sh/
+Live app: https://coordinator-tool.zoeferencova.now.sh/
 
 ## Summary
 
@@ -33,7 +33,6 @@ Endpoints related to user information associated with the User whose Token is pr
 
 Endpoints used to view and manipulate list item data associated with the User whose Token is provided with the request:
 
-* [Get User's List Items](docs/items/get.md) : `GET /api/list`
 * [Create List Item](docs/items/post.md) : `POST /api/list`
 * [Get List Item by ID](docs/items/id/get.md) : `GET /api/list/:id`
 * [Delete List Item by ID](docs/items/id/delete.md) : `DELETE /api/list/:id`
