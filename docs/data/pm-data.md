@@ -20,20 +20,20 @@ Get data on number of list items per PM for the current User.
 
 ```json
 [
-    [
-        {
-            "pending": "45"
-        }
-    ],
-    [
-        {
-            "created": "56"
-        }
-    ],
-    [
-        {
-            "completed": "28"
-        }
-    ]
+    {
+        "pm_id": 1,
+        "pm_name": "Jane",
+        "count": "40"
+    },
+    {
+        "pm_id": 2,
+        "pm_name": "Jack",
+        "count": "100"
+    },
+    {
+        "pm_id": 3,
+        "pm_name": "John",
+        "count": "133"
+    }
 ]
 ```
