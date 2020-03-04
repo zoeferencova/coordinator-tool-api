@@ -19,7 +19,12 @@ Get PM by PM ID.
 **Content** : 
 
 ```json
-
+{
+    "id": 1,
+    "user_id": 1,
+    "pm_name": "Jane",
+    "pm_email": "jane@example.com"
+}
 ```
 
 ## Error Responses
