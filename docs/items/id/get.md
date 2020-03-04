@@ -19,7 +19,18 @@ Get list item by list item ID.
 **Content** : 
 
 ```json
-
+{
+    "id": 9,
+    "status": "reached",
+    "project": "Example Project",
+    "project_url": "https://wwww.example.com",
+    "contact": "Example Contact",
+    "contact_url": "",
+    "date_created": "2020-02-13T16:07:37.059Z",
+    "notes": "Notes",
+    "pm_name": "Jessica",
+    "pm_email": "jessica@examplepm.com"
+}
 ```
 
 ## Error Responses
