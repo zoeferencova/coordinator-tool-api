@@ -12,60 +12,61 @@ The coordinator tool makes tracking reach-outs and organizing tasks extremely ea
 
 ### Authentication Endpoint
 
-Endpoint for authentication on user login.
+Endpoint for Authentication on user login.
 
 * [Login](docs/login.md) : `POST /api/auth/login`
 
-### User Endpoints
-
-Endpoints related to user information.
-
-* [Get User Info](docs/getuserinfo.md) : `GET /api/users`
-* [Create User](docs/createuser.md) : `POST /api/users`
-
 ### User Data Endpoint
 
-Endpoint used to retrieve all data (list item, PM, template, completed list item, and user data) associated with logged in user.
+Endpoint used to retrieve all data (list item, PM, template, completed list item, and user information) associated with the User whose Token is provided with the request:
 
-* [Get User Data](docs/getuserdata.md) : `GET /api/user-data`
+* [Get User Data](docs/user-data/get.md) : `GET /api/user-data`
+
+### User Information Endpoints
+
+Endpoints related to user information associated with the User whose Token is provided with the request:
+
+* [Get User Info](docs/user/get.md) : `GET /api/users`
+* [Create User](docs/user/post.md) : `POST /api/users`
 
 ### List Item Endpoints
 
-Endpoints used to view and manipulate list item data related to the logged in user.
+Endpoints used to view and manipulate list item data associated with the User whose Token is provided with the request:
 
-* [Create List Item](docs/createitem.md) : `POST /api/list`
-* [Get List Item by ID](docs/getitembyid.md) : `GET /api/list/:id`
-* [Delete List Item by ID](docs/deleteitem.md) : `DELETE /api/list/:id`
-* [Update List Item by ID](docs/updateitem.md) : `PATCH /api/list/:id`
+* [Get User's List Items](docs/items/get.md) : `GET /api/list`
+* [Create List Item](docs/items/post.md) : `POST /api/list`
+* [Get List Item by ID](docs/items/id/get.md) : `GET /api/list/:id`
+* [Delete List Item by ID](docs/items/id/delete.md) : `DELETE /api/list/:id`
+* [Update List Item by ID](docs/items/id/patch.md) : `PATCH /api/list/:id`
 
 ### PM Endpoints
 
-Endpoints used to view and manipulate PM data related to the logged in user.
+Endpoints used to view and manipulate PM data associated with the User whose Token is provided with the request:
 
-* [Get User's PMs](docs/getuserpms.md) : `GET /api/pms`
-* [Create PM](docs/createpm.md) : `POST /api/pms`
-* [Get PM by ID](docs.getpmbyid.md): `GET /api/pms/:id`
-* [Delete PM By ID](docs.deletepm.md): `DELETE /api/pms/:id`
+* [Get User's PMs](docs/pms/get.md) : `GET /api/pms`
+* [Create PM](docs/pms/post.md) : `POST /api/pms`
+* [Get PM by ID](docs/pms/id/get.md): `GET /api/pms/:id`
+* [Delete PM By ID](docs/pms/id/delete.md): `DELETE /api/pms/:id`
 
 ### Template Endpoints
 
-Endpoints used to view and manipulate template data related to the logged in user.
+Endpoints used to view and manipulate template data associated with the User whose Token is provided with the request:
 
-* [Get User's Templates](docs/getusertemplates.md) : `GET /api/templates`
-* [Create Template](docs/createtemplate.md) : `POST /api/templates`
-* [Get Template by ID](docs.gettemplatebyid.md): `GET /api/templates/:id`
-* [Delete Template By ID](docs.deletetemplate.md): `DELETE /api/templates/:id`
-* [Update Template by ID](docs/updatetemplate.md) : `PATCH /api/templates/:id`
+* [Get User's Templates](docs/templates/get.md) : `GET /api/templates`
+* [Create Template](docs/templates/post.md) : `POST /api/templates`
+* [Get Template by ID](docs/templates/id/get.md): `GET /api/templates/:id`
+* [Delete Template By ID](docs/templates/id/delete.md): `DELETE /api/templates/:id`
+* [Update Template by ID](docs/templates/id/patch.md) : `PATCH /api/templates/:id`
 
 ### Data Endpoints
 
-Endpoints used to view and manipulate quantitative data related to the logged in user for the user dashboard.
+Endpoints used to view quantitative data for the dashboard tab associated with the User whose Token is provided with the request:
 
-* [Get PM Data](docs/getpmdata.md) : `GET /api/data/pm-data`
-* [Get Completed Timespan Data](docs/getcompletedtimespandata.md) : `GET /api/data/completed-timespan-data`
-* [Get Created Timespan Data](docs/getcreatedtimespandata.md) : `GET /api/data/created-timespan-data`
-* [Get Time Completed Data](docs/gettimecompleteddata.md) : `GET /api/data/time-completed-data`
-* [Get Dashboard Data](docs/getdashboarddata.md) : `GET /api/data/dashboard-data`
+* [Get PM Data](docs/data/pm-data.md) : `GET /api/data/pm-data`
+* [Get Completed Timespan Data](docs/data/completed-timespan-data.md) : `GET /api/data/completed-timespan-data`
+* [Get Created Timespan Data](docs/data/created-timespan-data.md) : `GET /api/data/created-timespan-data`
+* [Get Time Completed Data](docs/data/time-completed-data.md) : `GET /api/data/time-completed-data`
+* [Get Dashboard Data](docs/data/dashboard-data.md) : `GET /api/data/dashboard-data`
 
 ## Technologies Used
 
