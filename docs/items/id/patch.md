@@ -4,6 +4,8 @@ Update the list item of the Authenticated User by ID.
 
 **URL** : `/api/list/:id/`
 
+**URL Parameters** : `id=[integer]` where `id` is the ID of the list item.
+
 **Method** : `PATCH`
 
 **Auth required** : YES
