@@ -40,7 +40,7 @@ Create a list item for the User whose Token is provided with the request.
 
 **Code** : `201 CREATED`
 
-**Content example**
+**Content example** :
 
 ```json
 {
@@ -63,7 +63,7 @@ Create a list item for the User whose Token is provided with the request.
 
 **Code** : `400 BAD REQUEST`
 
-**Content Example**
+**Content example** :
 
 ```json
 {
