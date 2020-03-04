@@ -73,7 +73,7 @@ Create a list item for the User whose Token is provided with the request.
 }
 ```
 
-### Or
+### OR
 
 **Condition** : If there is no Authorization Token provided with the request.
 
