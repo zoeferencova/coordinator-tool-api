@@ -4,7 +4,7 @@ Get template by template ID.
 
 **URL** : `/api/templates/:id/`
 
-**URL Parameters** : `id=[integer]` where `id` is the ID of the list item to be deleted.
+**URL Parameters** : `id=[integer]` where `id` is the ID of the template.
 
 **Method** : `GET`
 
