@@ -113,7 +113,7 @@ Get all data (list item, PM, template, completed list item, and user information
 
 ## Error Responses
 
-**Condition** : If there is no Authorization Token provided with the request or if the Token is invalid.
+**Condition** : If there is no Authorization Token provided with the request.
 
 **Code** : `401 UNAUTHORIZED`
 
@@ -122,5 +122,18 @@ Get all data (list item, PM, template, completed list item, and user information
 ```json
 {
     "error": "Missing bearer token"
+}
+```
+## OR
+
+**Condition** : If the provided Authorization Token is not valid.
+
+**Code** : `401 UNAUTHORIZED`
+
+**Content** : 
+
+```json
+{
+    "error": "Unauthorized request"
 }
 ```
