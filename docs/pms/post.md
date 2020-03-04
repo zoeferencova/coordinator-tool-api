@@ -23,7 +23,7 @@ Create a PM for the User whose Token is provided with the request.
 
 ```json
 {
-	  "pm_name": "Example",
+    "pm_name": "Example",
     "pm_email": "example@pm.com"
 }
 ```
