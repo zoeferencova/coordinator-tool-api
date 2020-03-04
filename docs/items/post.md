@@ -10,8 +10,8 @@ Create a list item for the User whose Token is provided with the request.
 
 **Data constraints**
 
-Required fields: `project`, `contact`, and `pm_id`
-Optional fields: `project_url`, `contact_url`, and `notes`
+* Required fields: `project`, `contact`, and `pm_id`
+* Optional fields: `project_url`, `contact_url`, and `notes`
 
 ```json
 {
