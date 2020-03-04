@@ -19,8 +19,8 @@ Optional fields: `project_url`, `contact_url`, and `notes`
     "project_url": "[project url in plain text]",
     "contact": "[contact name in plain text]",
     "contact_url": "[contact url in plain text]",
-    "pm_id": [pm_id as number],
-    "notes": [notes in plain text]
+    "pm_id": "[pm_id as number]",
+    "notes": "[notes in plain text]"
 }
 ```
 
