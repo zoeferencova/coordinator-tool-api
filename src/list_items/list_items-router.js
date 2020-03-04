@@ -58,8 +58,7 @@ listItemsRouter
 
 listItemsRouter
     .route('/:id')
-    .all(requireAuth)
-    .all((req, res, next) => {
+    .all(requireAuth, (req, res, next) => {
         ListItemsService.getById(
             req.app.get('db'),
             req.params.id,
