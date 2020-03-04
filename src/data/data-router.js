@@ -10,7 +10,7 @@ const dataRouter = express.Router();
 
 dataRouter
     .route('/pm-data')
-    .get((req, res, next) => {
+    .get(requireAuth, (req, res, next) => {
         const authToken = req.get('Authorization');
         const bearerToken = authToken.slice(7, authToken.length)
         const payload = AuthService.verifyJwt(bearerToken);
@@ -23,7 +23,7 @@ dataRouter
 
 dataRouter
     .route('/completed-timespan-data')
-    .get((req, res, next) => {
+    .get(requireAuth, (req, res, next) => {
         const authToken = req.get('Authorization');
         const bearerToken = authToken.slice(7, authToken.length)
         const payload = AuthService.verifyJwt(bearerToken);
@@ -36,7 +36,7 @@ dataRouter
 
 dataRouter
     .route('/created-timespan-data')
-    .get((req, res, next) => {
+    .get(requireAuth, (req, res, next) => {
         const authToken = req.get('Authorization');
         const bearerToken = authToken.slice(7, authToken.length)
         const payload = AuthService.verifyJwt(bearerToken);
@@ -49,7 +49,7 @@ dataRouter
 
 dataRouter
     .route('/time-completed-data')
-    .get((req, res, next) => {
+    .get(requireAuth, (req, res, next) => {
         const authToken = req.get('Authorization');
         const bearerToken = authToken.slice(7, authToken.length)
         const payload = AuthService.verifyJwt(bearerToken);
@@ -62,7 +62,7 @@ dataRouter
 
 dataRouter
     .route('/dashboard-data')
-    .get((req, res, next) => {
+    .get(requireAuth, (req, res, next) => {
         const authToken = req.get('Authorization');
         const bearerToken = authToken.slice(7, authToken.length)
         const payload = AuthService.verifyJwt(bearerToken);

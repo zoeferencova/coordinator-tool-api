@@ -57,7 +57,7 @@ pmsRouter
 
 pmsRouter
     .route('/:id')
-    .all((req, res, next) => {
+    .all(requireAuth, (req, res, next) => {
         PmsService.getById(
             req.app.get('db'),
             req.params.id,

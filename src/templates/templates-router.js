@@ -58,7 +58,7 @@ templatesRouter
 
 templatesRouter
     .route('/:id')
-    .all((req, res, next) => {
+    .all(requireAuth, (req, res, next) => {
         TemplatesService.getById(
             req.app.get('db'),
             req.params.id, 
