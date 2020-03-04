@@ -14,7 +14,7 @@ The coordinator tool makes tracking reach-outs and organizing tasks extremely ea
 
 Endpoint for Authentication on user login.
 
-* [Login](docs/login.md) : `POST /api/auth/login`
+* [Login](docs/auth/login.md) : `POST /api/auth/login`
 
 ### User Data Endpoint
 
