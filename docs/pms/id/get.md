@@ -2,7 +2,7 @@
 
 Get PM by PM ID.
 
-**URL** : `/api/pm/:id`
+**URL** : `/api/pms/:id`
 
 **Method** : `GET`
 

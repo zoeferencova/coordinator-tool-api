@@ -19,7 +19,13 @@ Get template by template ID.
 **Content** : 
 
 ```json
-
+{
+    "id": 20,
+    "user_id": 5,
+    "template_name": "New Template",
+    "template_subject": "Availability",
+    "template_content": "Hi [CONTACT],\n\nI am working with my colleague [PM] to arrange the new project on [PROJECT]. Could you please let me know on your updated availability for this week?\n\nThank you.\n\nBest Regards,\nDemo"
+}
 ```
 
 ## Error Responses
