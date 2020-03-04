@@ -124,7 +124,7 @@ Get all data (list item, PM, template, completed list item, and user information
     "error": "Missing bearer token"
 }
 ```
-## OR
+### OR
 
 **Condition** : If the provided Authorization Token is not valid.
 
