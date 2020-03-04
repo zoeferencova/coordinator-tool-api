@@ -25,16 +25,6 @@ const serializeItem = item => ({
 listItemsRouter
     .route('/')
     .all(requireAuth)
-    .get((req, res, next) => {
-        const authToken = req.get('Authorization');
-        const bearerToken = authToken.slice(7, authToken.length)
-        const payload = AuthService.verifyJwt(bearerToken);
-        const userId = payload.user_id;
-        ListItemsService.getAllItems(req.app.get('db'), userId)
-        .then(items => {
-            return res.json(items)
-        })
-    })
     .post(requireAuth, jsonBodyParser, (req, res, next) => {
         const { project, contact, pm_id } = req.body;
         const newItem = { project, contact, pm_id }
@@ -68,6 +58,7 @@ listItemsRouter
 
 listItemsRouter
     .route('/:id')
+    .all(requireAuth)
     .all((req, res, next) => {
         ListItemsService.getById(
             req.app.get('db'),
