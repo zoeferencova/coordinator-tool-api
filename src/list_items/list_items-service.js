@@ -13,7 +13,8 @@ const ListItemsService = {
                 'coordinator_list_items.contact_url',
                 'coordinator_list_items.date_created',
                 'coordinator_list_items.pm_id',
-                'coordinator_list_items.notes'
+                'coordinator_list_items.notes',
+                'coordinator_list_items.user_id'
             )
             .where({ user_id: userId })
             .select(
