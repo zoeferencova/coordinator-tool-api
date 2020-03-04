@@ -44,6 +44,22 @@ Update the list item of the Authenticated User by ID.
 
 ## Error Responses
 
+**Condition** : If there is no list item with the supplied ID.
+
+**Code** : `404 NOT FOUND`
+
+**Content**
+
+```json
+{
+    "error": {
+        "message": "Item doesn't exist"
+    }
+}
+```
+
+### OR
+
 **Condition** : If one of the required fields is missing.
 
 **Code** : `400 BAD REQUEST`
