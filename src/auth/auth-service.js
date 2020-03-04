@@ -22,6 +22,12 @@ const AuthService = {
             algorithms: 'HS256',
         })
     },
+    getUserId(authToken) {
+        const bearerToken = authToken.slice(7, authToken.length)
+        const payload = AuthService.verifyJwt(bearerToken);
+        const userId = payload.user_id;
+        return userId;
+    }
 }
 
 module.exports = AuthService;
