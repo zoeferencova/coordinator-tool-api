@@ -4,7 +4,7 @@ Get PM by PM ID.
 
 **URL** : `/api/pms/:id/`
 
-**URL Parameters** : `id=[integer]` where `id` is the ID of the list item to be deleted.
+**URL Parameters** : `id=[integer]` where `id` is the ID of PM.
 
 **Method** : `GET`
 
