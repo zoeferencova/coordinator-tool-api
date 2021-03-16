@@ -8,14 +8,3 @@ module.exports = {
     : process.env.DATABASE_URL,
   "ssl": !!process.env.SSL,
 }
-
-// const { Client } = require('pg');
-
-// const client = new Client({
-//   migrationDirectory: "migrations",
-//   driver: "pg",
-//   connectionString: process.env.DATABASE_URL,
-//   ssl: process.env.DATABASE_URL ? true : false
-// });
-
-// client.connect();
