@@ -6,7 +6,7 @@ module.exports = {
   "connectionString": (process.env.NODE_ENV === 'test')
     ? process.env.TEST_DATABASE_URL
     : process.env.DATABASE_URL,
-  "ssl": process.env.DATABASE_URL ? true : false
+  "ssl": !!process.env.SSL,
 }
 
 // const { Client } = require('pg');
