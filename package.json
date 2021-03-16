@@ -29,8 +29,12 @@
     "knex": "^0.20.8",
     "moment": "^2.24.0",
     "morgan": "^1.9.1",
+    "mssql": "^5.1.4",
+    "mysql": "^2.18.1",
+    "mysql2": "^2.2.5",
     "path": "^0.12.7",
     "pg": "^7.18.1",
+    "sqlite3": "^4.2.0",
     "xss": "^1.0.6"
   },
   "devDependencies": {
@@ -39,5 +43,9 @@
     "nodemon": "^2.0.2",
     "postgrator-cli": "^3.3.0",
     "supertest": "^4.0.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zoeferencova/coordinator-tool-api"
   }
 }
