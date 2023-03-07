@@ -1,4 +1,3 @@
-DROP TYPE IF EXISTS status CASCADE;
 CREATE TYPE status AS ENUM (
     'none',
     'reached',
