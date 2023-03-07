@@ -39,12 +39,8 @@
     "chai": "^4.3.7",
     "mocha": "^10.2.0",
     "nodemon": "^2.0.21",
-<<<<<<< HEAD
-    "prisma": "^4.11.0",
-=======
     "postgrator": "^7.1.1",
     "postgrator-cli": "^6.0.1",
->>>>>>> parent of bf68530 (moved postgrator-cli to dependencies)
     "supertest": "^6.3.3"
   },
   "repository": {
