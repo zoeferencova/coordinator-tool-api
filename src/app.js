@@ -1,17 +1,18 @@
-require('dotenv').config();
-const express = require('express');
-const morgan = require('morgan');
-const cors = require('cors');
-const helmet = require('helmet');
-const { NODE_ENV } = require('./config')
-const userDataRouter = require('./user-data/user-data-router')
-const usersRouter = require('./users/users-router');
-const listItemsRouter = require('./list_items/list_items-router');
-const pmsRouter = require('./pms/pms-router');
-const templatesRouter = require('./templates/templates-router');
-const authRouter = require('./auth/auth-router');
-const completedRouter = require('./completed/completed-router');
-const dataRouter = require('./data/data-router');
+import * as dotenv from 'dotenv';
+import morgan from 'morgan';
+import cors from 'cors';
+import helmet from 'helmet';
+import { NODE_ENV } from './config';
+import userDataRouter from './user-data/user-data-router';
+import usersRouter from './users/users-router';
+import listItemsRouter from './list_items/list_items-router';
+import pmsRouter from './pms/pms-router';
+import templatesRouter from './templates/templates-router';
+import authRouter from './auth/auth-router';
+import completedRouter from './completed/completed-router';
+import dataRouter from './data/data-router';
+
+dotenv.config()
 
 const app = express();
 
@@ -41,4 +42,4 @@ app.use(function errorHandler(error, req, res, next) {
     res.status(500).json(response)
 })
 
-module.exports = app;
+export default app;
