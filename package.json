@@ -36,6 +36,7 @@
     "chai": "^4.3.7",
     "mocha": "^10.2.0",
     "nodemon": "^2.0.21",
+    "postgrator": "^7.1.1",
     "postgrator-cli": "^6.0.1",
     "supertest": "^6.3.3"
   },
