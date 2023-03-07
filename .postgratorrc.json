@@ -1,9 +1,10 @@
 {
     "migrationPattern": "migrations/*",
     "driver": "pg",
-    "host": "127.0.0.1",
+    "host": "dpg-cg3evp7dvk4r4hid09og-a.ohio-postgres.render.com",
     "port": 5432,
     "database": "coordinator_tool",
     "username": "zoeferencova",
-    "password": "pWKh6jwW5qg175Vdl4RwYYqAVtEbzuVD"
+    "password": "pWKh6jwW5qg175Vdl4RwYYqAVtEbzuVD",
+    "ssl": true
 }
