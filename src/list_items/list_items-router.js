@@ -43,7 +43,7 @@ listItemsRouter
         newItem.notes = req.body.notes;
         newItem.contact_url = req.body.contact_url;
         newItem.project_url = req.body.project_url;
-        
+
         ListItemsService.insertItem(
             req.app.get('db'),
             newItem
@@ -62,7 +62,7 @@ listItemsRouter
         ListItemsService.getById(
             req.app.get('db'),
             req.params.id,
-            
+
         )
             .then(item => {
                 if (!item) {
@@ -85,17 +85,17 @@ listItemsRouter
     .delete((req, res, next) => {
         const id = req.params.id;
         ListItemsService.deleteItem(req.app.get('db'), id)
-           .then(id => {
-               res.status(204).end()
-           })
-           .catch(next)
+            .then(id => {
+                res.status(204).end()
+            })
+            .catch(next)
     })
     .patch(jsonBodyParser, (req, res, next) => {
         const { project, project_url, contact, contact_url, status, pm_id, notes, date_completed } = req.body;
         const itemToUpdate = { project, project_url, contact, contact_url, status, pm_id, notes, date_completed }
-        
+
         const numberOfValues = Object.values(itemToUpdate).filter(Boolean).length;
-        const requiredValues = {project, contact, pm_id}
+        const requiredValues = { project, contact, pm_id }
 
 
         for (const [key, value] of Object.entries(requiredValues)) {

@@ -39,6 +39,17 @@ dataRouter
     })
 
 dataRouter
+    .route('/timespan-data/:type/:span')
+    .get(requireAuth, (req, res, next) => {
+        const userId = AuthService.getUserId(req.get('Authorization'));
+        const { type, span } = req.params;
+        DataService.getTimespanData(req.app.get('db'), userId, type, span)
+            .then(data => {
+                return res.json(data)
+            })
+    })
+
+dataRouter
     .route('/time-completed-data')
     .get(requireAuth, (req, res, next) => {
         const userId = AuthService.getUserId(req.get('Authorization'));
